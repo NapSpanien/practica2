@@ -39,11 +39,19 @@ fin : primario {printf("\nfin -> primario\n");}
 	| fin primario {printf("\nfin -> fin primario\n");}
 	| fin cadenaMult {printf("\nfin -> fin cadenaMult\n");}
 	| fin expresionCondicional { printf("\nfin -> fin expresionCondicional\n");}
-	| fin enumeraciones { printf("\nfin -> fin enumeraciones\n");}
 ;
 
 
+identificadorMultiple: IDENTIFICADOR ',' IDENTIFICADOR {printf("IDENTIFICADOR ',' IDENTIFICADOR");}
+	| identificadorMultiple ',' IDENTIFICADOR {printf("identificadorMultiple ',' IDENTIFICADOR");}
+;
 
+especificacionTipo: nombre {printf("especificacionTipo -> nombre");}
+	| tipoNoEstructurado {printf("especificacionTipo -> tipoNoEstructurado");}
+;
+
+tipoNoEstructurado: 
+;
 
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
 	| cadenaMult ',' CTC_CADENA {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}
@@ -83,9 +91,8 @@ objeto: nombre //no estoy seguro pero es lo q pone
 ; 
 
 //error: ERROR { printf("\error -> objeto [ expresion ]"); yyerrok; };
-enumeraciones: claveValor
-	| campoValor
-;
+
+
 claveValor: CTC_CADENA FLECHA expresion {printf("\nclave_valor -> CTC_CADENA => expresion");}
 ;
 campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
@@ -107,6 +114,7 @@ clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\n clausulaIteracion
 	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nREPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
 	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
 ;
+
 
 
 %%
