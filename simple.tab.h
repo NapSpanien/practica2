@@ -107,7 +107,7 @@ extern int yydebug;
     VERDADERO = 317,
     CTC_CARACTER = 318,
     CTC_CADENA = 319,
-    ID = 320,
+    IDENTIFICADOR = 320,
     CTC_ENTERA = 321,
     CTC_REAL = 322,
     DOS_PUNTOS = 323,
@@ -131,7 +131,7 @@ extern int yydebug;
     ASIG_POT = 341,
     ASIG_DESPI = 342,
     ASIG_DESPD = 343,
-    IDENTIFICADOR = 344
+    ERROR = 344
   };
 #endif
 
