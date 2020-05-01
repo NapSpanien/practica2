@@ -1,0 +1,922 @@
+Terminales no usados en la gramática
+
+   ABSTRACTO
+   BOOLEANO
+   BUCLE
+   CARACTER
+   CASOS
+   CLASE
+   COMO
+   CONSTANTE
+   CONSTRUCTOR
+   CORTO
+   CUANDO
+   DE
+   DESCENDENTE
+   DESTRUCTOR
+   DEVOLVER
+   DICCIONARIO
+   EN
+   ENTERO
+   ENUMERACION
+   ES
+   ESPECIFICO
+   EXCEPCION
+   EXPORTAR
+   FIN
+   FINAL
+   FINALMENTE
+   GENERICO
+   IMPORTAR
+   LARGO
+   LANZA
+   LIBRERIA
+   LISTA
+   MIENTRAS
+   OBJETO
+   OTRO
+   PARA
+   PRINCIPIO
+   PRIVADO
+   PROGRAMA
+   PROTEGIDO
+   PRUEBA
+   PUBLICO
+   RANGO
+   REAL
+   REFERENCIA
+   REGISTRO
+   REPETIR
+   SALIR
+   SIGNO
+   SIGUIENTE
+   SUBPROGRAMA
+   TABLA
+   TIPO
+   ULTIMA
+   VALOR
+   ID
+   DOS_PUNTOS
+   ASIGNACION
+   INC
+   DEC
+   DESPI
+   DESPD
+   LEQ
+   GEQ
+   NEQ
+   AND
+   OR
+   ASIG_SUMA
+   ASIG_RESTA
+   ASIG_MULT
+   ASIG_DIV
+   ASIG_RESTO
+   ASIG_POT
+   ASIG_DESPI
+   ASIG_DESPD
+
+
+Estado 22 conflictos: 10 reducción/reducción
+
+
+Gramática
+
+    0 $accept: fin $end
+
+    1 fin: primario
+    2    | fin primario
+    3    | fin cadenaMult
+    4    | fin expresionCondicional
+    5    | fin enumeraciones
+
+    6 cadenaMult: CTC_CADENA ',' CTC_CADENA
+    7           | cadenaMult ',' CTC_CADENA
+    8           | cadenaMult ',' error
+
+    9 nombre: IDENTIFICADOR
+   10       | nombre CUATRO_PUNTOS IDENTIFICADOR
+
+   11 expresionMult: expresionMult ',' expresion
+   12              | expresion ',' expresion
+   13              | expresion ',' error
+
+   14 expresion: primario
+
+   15 primario: literal
+   16         | objeto
+   17         | '(' expresion ')'
+
+   18 literal: VERDADERO
+   19        | FALSO
+   20        | CTC_ENTERA
+   21        | CTC_REAL
+   22        | CTC_CARACTER
+   23        | CTC_CADENA
+
+   24 objeto: nombre
+   25       | objeto '.' nombre
+   26       | objeto '[' expresion ']'
+   27       | objeto '[' expresionMult ']'
+   28       | objeto '{' CTC_CADENA '}'
+   29       | objeto '{' cadenaMult '}'
+
+   30 enumeraciones: claveValor
+   31              | campoValor
+
+   32 claveValor: CTC_CADENA FLECHA expresion
+
+   33 campoValor: IDENTIFICADOR FLECHA expresion
+
+   34 expresionCondicional: expresion
+   35                     | SI expresion ENTONCES expresion
+   36                     | SI expresion ENTONCES expresion SINO expresion
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+'(' (40) 17
+')' (41) 17
+',' (44) 6 7 8 11 12 13
+'.' (46) 25
+'[' (91) 26 27
+']' (93) 26 27
+'{' (123) 28 29
+'}' (125) 28 29
+error (256) 8 13
+ABSTRACTO (258)
+BOOLEANO (259)
+BUCLE (260)
+CARACTER (261)
+CASOS (262)
+CLASE (263)
+COMO (264)
+CONSTANTE (265)
+CONSTRUCTOR (266)
+CORTO (267)
+CUANDO (268)
+DE (269)
+DESCENDENTE (270)
+DESTRUCTOR (271)
+DEVOLVER (272)
+DICCIONARIO (273)
+EN (274)
+ENTERO (275)
+ENTONCES (276) 35 36
+ENUMERACION (277)
+ES (278)
+ESPECIFICO (279)
+EXCEPCION (280)
+EXPORTAR (281)
+FALSO (282) 19
+FIN (283)
+FINAL (284)
+FINALMENTE (285)
+GENERICO (286)
+IMPORTAR (287)
+LARGO (288)
+LANZA (289)
+LIBRERIA (290)
+LISTA (291)
+MIENTRAS (292)
+OBJETO (293)
+OTRO (294)
+PARA (295)
+PRINCIPIO (296)
+PRIVADO (297)
+PROGRAMA (298)
+PROTEGIDO (299)
+PRUEBA (300)
+PUBLICO (301)
+RANGO (302)
+REAL (303)
+REFERENCIA (304)
+REGISTRO (305)
+REPETIR (306)
+SALIR (307)
+SI (308) 35 36
+SIGNO (309)
+SIGUIENTE (310)
+SINO (311) 36
+SUBPROGRAMA (312)
+TABLA (313)
+TIPO (314)
+ULTIMA (315)
+VALOR (316)
+VERDADERO (317) 18
+CTC_CARACTER (318) 22
+CTC_CADENA (319) 6 7 23 28 32
+ID (320)
+CTC_ENTERA (321) 20
+CTC_REAL (322) 21
+DOS_PUNTOS (323)
+CUATRO_PUNTOS (324) 10
+ASIGNACION (325)
+FLECHA (326) 32 33
+INC (327)
+DEC (328)
+DESPI (329)
+DESPD (330)
+LEQ (331)
+GEQ (332)
+NEQ (333)
+AND (334)
+OR (335)
+ASIG_SUMA (336)
+ASIG_RESTA (337)
+ASIG_MULT (338)
+ASIG_DIV (339)
+ASIG_RESTO (340)
+ASIG_POT (341)
+ASIG_DESPI (342)
+ASIG_DESPD (343)
+IDENTIFICADOR (344) 9 10 33
+
+
+No terminales con las reglas donde aparecen
+
+$accept (98)
+    en la izquierda: 0
+fin (99)
+    en la izquierda: 1 2 3 4 5, en la derecha: 0 2 3 4 5
+cadenaMult (100)
+    en la izquierda: 6 7 8, en la derecha: 3 7 8 29
+nombre (101)
+    en la izquierda: 9 10, en la derecha: 10 24 25
+expresionMult (102)
+    en la izquierda: 11 12 13, en la derecha: 11 27
+expresion (103)
+    en la izquierda: 14, en la derecha: 11 12 13 17 26 32 33 34 35
+    36
+primario (104)
+    en la izquierda: 15 16 17, en la derecha: 1 2 14
+literal (105)
+    en la izquierda: 18 19 20 21 22 23, en la derecha: 15
+objeto (106)
+    en la izquierda: 24 25 26 27 28 29, en la derecha: 16 25 26 27
+    28 29
+enumeraciones (107)
+    en la izquierda: 30 31, en la derecha: 5
+claveValor (108)
+    en la izquierda: 32, en la derecha: 30
+campoValor (109)
+    en la izquierda: 33, en la derecha: 31
+expresionCondicional (110)
+    en la izquierda: 34 35 36, en la derecha: 4
+
+
+Estado 0
+
+    0 $accept: . fin $end
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    fin       ir al estado 9
+    nombre    ir al estado 10
+    primario  ir al estado 11
+    literal   ir al estado 12
+    objeto    ir al estado 13
+
+
+Estado 1
+
+   19 literal: FALSO .
+
+    $default  reduce usando la regla 19 (literal)
+
+
+Estado 2
+
+   18 literal: VERDADERO .
+
+    $default  reduce usando la regla 18 (literal)
+
+
+Estado 3
+
+   22 literal: CTC_CARACTER .
+
+    $default  reduce usando la regla 22 (literal)
+
+
+Estado 4
+
+   23 literal: CTC_CADENA .
+
+    $default  reduce usando la regla 23 (literal)
+
+
+Estado 5
+
+   20 literal: CTC_ENTERA .
+
+    $default  reduce usando la regla 20 (literal)
+
+
+Estado 6
+
+   21 literal: CTC_REAL .
+
+    $default  reduce usando la regla 21 (literal)
+
+
+Estado 7
+
+    9 nombre: IDENTIFICADOR .
+
+    $default  reduce usando la regla 9 (nombre)
+
+
+Estado 8
+
+   17 primario: '(' . expresion ')'
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre     ir al estado 10
+    expresion  ir al estado 14
+    primario   ir al estado 15
+    literal    ir al estado 12
+    objeto     ir al estado 13
+
+
+Estado 9
+
+    0 $accept: fin . $end
+    2 fin: fin . primario
+    3    | fin . cadenaMult
+    4    | fin . expresionCondicional
+    5    | fin . enumeraciones
+
+    $end           desplazar e ir al estado 16
+    FALSO          desplazar e ir al estado 1
+    SI             desplazar e ir al estado 17
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 18
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 19
+    '('            desplazar e ir al estado 8
+
+    cadenaMult            ir al estado 20
+    nombre                ir al estado 10
+    expresion             ir al estado 21
+    primario              ir al estado 22
+    literal               ir al estado 12
+    objeto                ir al estado 13
+    enumeraciones         ir al estado 23
+    claveValor            ir al estado 24
+    campoValor            ir al estado 25
+    expresionCondicional  ir al estado 26
+
+
+Estado 10
+
+   10 nombre: nombre . CUATRO_PUNTOS IDENTIFICADOR
+   24 objeto: nombre .
+
+    CUATRO_PUNTOS  desplazar e ir al estado 27
+
+    $default  reduce usando la regla 24 (objeto)
+
+
+Estado 11
+
+    1 fin: primario .
+
+    $default  reduce usando la regla 1 (fin)
+
+
+Estado 12
+
+   15 primario: literal .
+
+    $default  reduce usando la regla 15 (primario)
+
+
+Estado 13
+
+   16 primario: objeto .
+   25 objeto: objeto . '.' nombre
+   26       | objeto . '[' expresion ']'
+   27       | objeto . '[' expresionMult ']'
+   28       | objeto . '{' CTC_CADENA '}'
+   29       | objeto . '{' cadenaMult '}'
+
+    '.'  desplazar e ir al estado 28
+    '['  desplazar e ir al estado 29
+    '{'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 16 (primario)
+
+
+Estado 14
+
+   17 primario: '(' expresion . ')'
+
+    ')'  desplazar e ir al estado 31
+
+
+Estado 15
+
+   14 expresion: primario .
+
+    $default  reduce usando la regla 14 (expresion)
+
+
+Estado 16
+
+    0 $accept: fin $end .
+
+    $default  aceptar
+
+
+Estado 17
+
+   35 expresionCondicional: SI . expresion ENTONCES expresion
+   36                     | SI . expresion ENTONCES expresion SINO expresion
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre     ir al estado 10
+    expresion  ir al estado 32
+    primario   ir al estado 15
+    literal    ir al estado 12
+    objeto     ir al estado 13
+
+
+Estado 18
+
+    6 cadenaMult: CTC_CADENA . ',' CTC_CADENA
+   23 literal: CTC_CADENA .
+   32 claveValor: CTC_CADENA . FLECHA expresion
+
+    FLECHA  desplazar e ir al estado 33
+    ','     desplazar e ir al estado 34
+
+    $default  reduce usando la regla 23 (literal)
+
+
+Estado 19
+
+    9 nombre: IDENTIFICADOR .
+   33 campoValor: IDENTIFICADOR . FLECHA expresion
+
+    FLECHA  desplazar e ir al estado 35
+
+    $default  reduce usando la regla 9 (nombre)
+
+
+Estado 20
+
+    3 fin: fin cadenaMult .
+    7 cadenaMult: cadenaMult . ',' CTC_CADENA
+    8           | cadenaMult . ',' error
+
+    ','  desplazar e ir al estado 36
+
+    $default  reduce usando la regla 3 (fin)
+
+
+Estado 21
+
+   34 expresionCondicional: expresion .
+
+    $default  reduce usando la regla 34 (expresionCondicional)
+
+
+Estado 22
+
+    2 fin: fin primario .
+   14 expresion: primario .
+
+    $end           reduce usando la regla 2 (fin)
+    $end           [reduce usando la regla 14 (expresion)]
+    FALSO          reduce usando la regla 2 (fin)
+    FALSO          [reduce usando la regla 14 (expresion)]
+    SI             reduce usando la regla 2 (fin)
+    SI             [reduce usando la regla 14 (expresion)]
+    VERDADERO      reduce usando la regla 2 (fin)
+    VERDADERO      [reduce usando la regla 14 (expresion)]
+    CTC_CARACTER   reduce usando la regla 2 (fin)
+    CTC_CARACTER   [reduce usando la regla 14 (expresion)]
+    CTC_CADENA     reduce usando la regla 2 (fin)
+    CTC_CADENA     [reduce usando la regla 14 (expresion)]
+    CTC_ENTERA     reduce usando la regla 2 (fin)
+    CTC_ENTERA     [reduce usando la regla 14 (expresion)]
+    CTC_REAL       reduce usando la regla 2 (fin)
+    CTC_REAL       [reduce usando la regla 14 (expresion)]
+    IDENTIFICADOR  reduce usando la regla 2 (fin)
+    IDENTIFICADOR  [reduce usando la regla 14 (expresion)]
+    '('            reduce usando la regla 2 (fin)
+    '('            [reduce usando la regla 14 (expresion)]
+    $default       reduce usando la regla 2 (fin)
+
+
+Estado 23
+
+    5 fin: fin enumeraciones .
+
+    $default  reduce usando la regla 5 (fin)
+
+
+Estado 24
+
+   30 enumeraciones: claveValor .
+
+    $default  reduce usando la regla 30 (enumeraciones)
+
+
+Estado 25
+
+   31 enumeraciones: campoValor .
+
+    $default  reduce usando la regla 31 (enumeraciones)
+
+
+Estado 26
+
+    4 fin: fin expresionCondicional .
+
+    $default  reduce usando la regla 4 (fin)
+
+
+Estado 27
+
+   10 nombre: nombre CUATRO_PUNTOS . IDENTIFICADOR
+
+    IDENTIFICADOR  desplazar e ir al estado 37
+
+
+Estado 28
+
+   25 objeto: objeto '.' . nombre
+
+    IDENTIFICADOR  desplazar e ir al estado 7
+
+    nombre  ir al estado 38
+
+
+Estado 29
+
+   26 objeto: objeto '[' . expresion ']'
+   27       | objeto '[' . expresionMult ']'
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre         ir al estado 10
+    expresionMult  ir al estado 39
+    expresion      ir al estado 40
+    primario       ir al estado 15
+    literal        ir al estado 12
+    objeto         ir al estado 13
+
+
+Estado 30
+
+   28 objeto: objeto '{' . CTC_CADENA '}'
+   29       | objeto '{' . cadenaMult '}'
+
+    CTC_CADENA  desplazar e ir al estado 41
+
+    cadenaMult  ir al estado 42
+
+
+Estado 31
+
+   17 primario: '(' expresion ')' .
+
+    $default  reduce usando la regla 17 (primario)
+
+
+Estado 32
+
+   35 expresionCondicional: SI expresion . ENTONCES expresion
+   36                     | SI expresion . ENTONCES expresion SINO expresion
+
+    ENTONCES  desplazar e ir al estado 43
+
+
+Estado 33
+
+   32 claveValor: CTC_CADENA FLECHA . expresion
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre     ir al estado 10
+    expresion  ir al estado 44
+    primario   ir al estado 15
+    literal    ir al estado 12
+    objeto     ir al estado 13
+
+
+Estado 34
+
+    6 cadenaMult: CTC_CADENA ',' . CTC_CADENA
+
+    CTC_CADENA  desplazar e ir al estado 45
+
+
+Estado 35
+
+   33 campoValor: IDENTIFICADOR FLECHA . expresion
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre     ir al estado 10
+    expresion  ir al estado 46
+    primario   ir al estado 15
+    literal    ir al estado 12
+    objeto     ir al estado 13
+
+
+Estado 36
+
+    7 cadenaMult: cadenaMult ',' . CTC_CADENA
+    8           | cadenaMult ',' . error
+
+    error       desplazar e ir al estado 47
+    CTC_CADENA  desplazar e ir al estado 48
+
+
+Estado 37
+
+   10 nombre: nombre CUATRO_PUNTOS IDENTIFICADOR .
+
+    $default  reduce usando la regla 10 (nombre)
+
+
+Estado 38
+
+   10 nombre: nombre . CUATRO_PUNTOS IDENTIFICADOR
+   25 objeto: objeto '.' nombre .
+
+    CUATRO_PUNTOS  desplazar e ir al estado 27
+
+    $default  reduce usando la regla 25 (objeto)
+
+
+Estado 39
+
+   11 expresionMult: expresionMult . ',' expresion
+   27 objeto: objeto '[' expresionMult . ']'
+
+    ','  desplazar e ir al estado 49
+    ']'  desplazar e ir al estado 50
+
+
+Estado 40
+
+   12 expresionMult: expresion . ',' expresion
+   13              | expresion . ',' error
+   26 objeto: objeto '[' expresion . ']'
+
+    ','  desplazar e ir al estado 51
+    ']'  desplazar e ir al estado 52
+
+
+Estado 41
+
+    6 cadenaMult: CTC_CADENA . ',' CTC_CADENA
+   28 objeto: objeto '{' CTC_CADENA . '}'
+
+    ','  desplazar e ir al estado 34
+    '}'  desplazar e ir al estado 53
+
+
+Estado 42
+
+    7 cadenaMult: cadenaMult . ',' CTC_CADENA
+    8           | cadenaMult . ',' error
+   29 objeto: objeto '{' cadenaMult . '}'
+
+    ','  desplazar e ir al estado 36
+    '}'  desplazar e ir al estado 54
+
+
+Estado 43
+
+   35 expresionCondicional: SI expresion ENTONCES . expresion
+   36                     | SI expresion ENTONCES . expresion SINO expresion
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre     ir al estado 10
+    expresion  ir al estado 55
+    primario   ir al estado 15
+    literal    ir al estado 12
+    objeto     ir al estado 13
+
+
+Estado 44
+
+   32 claveValor: CTC_CADENA FLECHA expresion .
+
+    $default  reduce usando la regla 32 (claveValor)
+
+
+Estado 45
+
+    6 cadenaMult: CTC_CADENA ',' CTC_CADENA .
+
+    $default  reduce usando la regla 6 (cadenaMult)
+
+
+Estado 46
+
+   33 campoValor: IDENTIFICADOR FLECHA expresion .
+
+    $default  reduce usando la regla 33 (campoValor)
+
+
+Estado 47
+
+    8 cadenaMult: cadenaMult ',' error .
+
+    $default  reduce usando la regla 8 (cadenaMult)
+
+
+Estado 48
+
+    7 cadenaMult: cadenaMult ',' CTC_CADENA .
+
+    $default  reduce usando la regla 7 (cadenaMult)
+
+
+Estado 49
+
+   11 expresionMult: expresionMult ',' . expresion
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre     ir al estado 10
+    expresion  ir al estado 56
+    primario   ir al estado 15
+    literal    ir al estado 12
+    objeto     ir al estado 13
+
+
+Estado 50
+
+   27 objeto: objeto '[' expresionMult ']' .
+
+    $default  reduce usando la regla 27 (objeto)
+
+
+Estado 51
+
+   12 expresionMult: expresion ',' . expresion
+   13              | expresion ',' . error
+
+    error          desplazar e ir al estado 57
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre     ir al estado 10
+    expresion  ir al estado 58
+    primario   ir al estado 15
+    literal    ir al estado 12
+    objeto     ir al estado 13
+
+
+Estado 52
+
+   26 objeto: objeto '[' expresion ']' .
+
+    $default  reduce usando la regla 26 (objeto)
+
+
+Estado 53
+
+   28 objeto: objeto '{' CTC_CADENA '}' .
+
+    $default  reduce usando la regla 28 (objeto)
+
+
+Estado 54
+
+   29 objeto: objeto '{' cadenaMult '}' .
+
+    $default  reduce usando la regla 29 (objeto)
+
+
+Estado 55
+
+   35 expresionCondicional: SI expresion ENTONCES expresion .
+   36                     | SI expresion ENTONCES expresion . SINO expresion
+
+    SINO  desplazar e ir al estado 59
+
+    $default  reduce usando la regla 35 (expresionCondicional)
+
+
+Estado 56
+
+   11 expresionMult: expresionMult ',' expresion .
+
+    $default  reduce usando la regla 11 (expresionMult)
+
+
+Estado 57
+
+   13 expresionMult: expresion ',' error .
+
+    $default  reduce usando la regla 13 (expresionMult)
+
+
+Estado 58
+
+   12 expresionMult: expresion ',' expresion .
+
+    $default  reduce usando la regla 12 (expresionMult)
+
+
+Estado 59
+
+   36 expresionCondicional: SI expresion ENTONCES expresion SINO . expresion
+
+    FALSO          desplazar e ir al estado 1
+    VERDADERO      desplazar e ir al estado 2
+    CTC_CARACTER   desplazar e ir al estado 3
+    CTC_CADENA     desplazar e ir al estado 4
+    CTC_ENTERA     desplazar e ir al estado 5
+    CTC_REAL       desplazar e ir al estado 6
+    IDENTIFICADOR  desplazar e ir al estado 7
+    '('            desplazar e ir al estado 8
+
+    nombre     ir al estado 10
+    expresion  ir al estado 60
+    primario   ir al estado 15
+    literal    ir al estado 12
+    objeto     ir al estado 13
+
+
+Estado 60
+
+   36 expresionCondicional: SI expresion ENTONCES expresion SINO expresion .
+
+    $default  reduce usando la regla 36 (expresionCondicional)
