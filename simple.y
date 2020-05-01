@@ -23,18 +23,18 @@ int yyerror(char *s);
 %token IMPORTAR LARGO LANZA LIBRERIA LISTA MIENTRAS OBJETO OTRO PARA PRINCIPIO PRIVADO
 %token PROGRAMA PROTEGIDO PRUEBA PUBLICO RANGO REAL REFERENCIA REGISTRO REPETIR SALIR
 %token SI SIGNO SIGUIENTE SINO SUBPROGRAMA TABLA TIPO ULTIMA VALOR VERDADERO CTC_CARACTER
-%token CTC_CADENA ID CTC_ENTERA CTC_REAL DOS_PUNTOS CUATRO_PUNTOS
+%token CTC_CADENA IDENTIFICADOR CTC_ENTERA CTC_REAL DOS_PUNTOS CUATRO_PUNTOS
 %token ASIGNACION FLECHA INC DEC DESPI DESPD LEQ GEQ NEQ AND OR ASIG_SUMA ASIG_RESTA
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
-%token <texto> IDENTIFICADOR
+%token ERROR
+//%token <texto> IDENTIFICADOR
+%right FLECHA 
+%right SI ENTONCES SINO
 
-%right FLECHA
-%right SI
-%right SINO
-%right ENTONCES
 
 %%
 //Parte 3.7 pag 12
+
 fin : primario {printf("\nfin -> primario\n");}
 	| fin primario {printf("\nfin -> fin primario\n");}
 	| fin cadenaMult {printf("\nfin -> fin cadenaMult\n");}
@@ -74,7 +74,7 @@ literal: VERDADERO {printf("\nliteral -> VERDADERO");}
 	| CTC_CADENA {printf("\nliteral -> CTC_CADENA");}
 ;
 
-objeto: nombre //no estoy seguro pero es lo q pone
+objeto: nombre  
 	| objeto '.' nombre {printf("\nobjeto -> objeto . nombre");}
 	| objeto '[' expresion ']' {printf("\nobjeto -> objeto [ expresion ]");}
 	| objeto '[' expresionMult ']' {printf("\nobjeto -> objeto [ expresionMult ]");}
@@ -82,9 +82,13 @@ objeto: nombre //no estoy seguro pero es lo q pone
 	| objeto '{' cadenaMult '}' {printf("\nobjeto -> objeto { cadenaMult }");}
 ; 
 
+clausulaIteracion :  //TODO ACABAR
+;
 //error: ERROR { printf("\error -> objeto [ expresion ]"); yyerrok; };
-enumeraciones: claveValor
-	| campoValor
+enumeraciones: '[' expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
+	| '[' expresionMult ']' {printf("\nenumeraciones -> [ expresionMult ]");}
+	| '{' claveValor '}' {printf("\nenumeraciones -> [ claveValor ]");}
+	| '{' campoValor '}' {printf("\nenumeraciones -> [ campoValor ]");}
 ;
 claveValor: CTC_CADENA FLECHA expresion {printf("\nclave_valor -> CTC_CADENA => expresion");}
 ;
@@ -97,10 +101,9 @@ expresionCondicional: expresion {printf("\nexpresionCondicional -> expresion");}
 
 %%
 
-
 int yyerror(char *s) {
   fflush(stdout);
-  printf("***************** %s\n",s);
+  printf("\n***************** %s\n",s);
  return(1);
   }
 
