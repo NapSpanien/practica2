@@ -95,6 +95,20 @@ expresionCondicional: expresion {printf("\nexpresionCondicional -> expresion");}
 	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 ;
 
+rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion DOS_PUNTOS expresion");}
+	| rango DOS_PUNTOS expresion {printf("\nrango -> rango DOS_PUNTOS expresion");}
+;
+
+clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\n clausulaIteracion PARA IDENTIFICADOR EN expresion"):}
+	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nPARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
+	| REPETIR IDENTIFICADOR EN RANGO {printf("\n REPETIR IDENTIFICADOR EN RANGO");}
+	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nREPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
+	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf"\nREPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
+	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nREPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
+	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
+;
+
+
 %%
 
 
