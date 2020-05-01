@@ -30,16 +30,17 @@ int yyerror(char *s);
 //%token <texto> IDENTIFICADOR
 %right FLECHA 
 %right SI ENTONCES SINO
+%right '{'
 
 
 %%
 //Parte 3.7 pag 12
 
-fin : primario {printf("\nfin -> primario\n");}
-	| fin primario {printf("\nfin -> fin primario\n");}
-	| fin cadenaMult {printf("\nfin -> fin cadenaMult\n");}
-	| fin expresionCondicional { printf("\nfin -> fin expresionCondicional\n");}
-	| fin enumeraciones { printf("\nfin -> fin enumeraciones\n");}
+fin : expresionCondicional
+	| fin enumeraciones {printf("\nfin -> enumeraciones\n");}
+	| fin expresionCondicional {printf("\nfin -> expresionCondicional\n");}
+	| fin objeto {printf("\nfin -> objeto\n");}
+
 ;
 
 
@@ -88,9 +89,18 @@ clausulaIteracion :  //TODO ACABAR
 enumeraciones: '[' expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
 	| '[' expresionMult ']' {printf("\nenumeraciones -> [ expresionMult ]");}
 	| '{' claveValor '}' {printf("\nenumeraciones -> [ claveValor ]");}
+	| '{' claveValorMult '}' {printf("\nenumeraciones -> [ claveValorMultiple ]");}
 	| '{' campoValor '}' {printf("\nenumeraciones -> [ campoValor ]");}
+	| '{' campoValorMult '}' {printf("\nenumeraciones -> [ campoValorMultiple ]");}
+;
+
+claveValorMult: claveValor ',' claveValor {printf("\nclaveValorMult -> claveValor , claveValor");}
+	| claveValorMult ',' claveValor {printf("\nclaveValorMult -> claveValorMult , claveValor");}
 ;
 claveValor: CTC_CADENA FLECHA expresion {printf("\nclave_valor -> CTC_CADENA => expresion");}
+;
+campoValorMult : campoValor ',' campoValor {printf("\ncampoValorMult -> campo_valor , campo_valor");}
+	| campoValorMult ',' campoValor {printf("\ncampoValorMult -> campoValorMult , campo_valor");}
 ;
 campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
 ;
