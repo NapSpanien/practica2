@@ -83,8 +83,6 @@ objeto: nombre
 	| objeto '{' cadenaMult '}'    {printf("\nobjeto -> objeto { cadenaMult }");}
 ; 
 
-clausulaIteracion :  //TODO ACABAR
-;
 //error: ERROR { printf("\error -> objeto [ expresion ]"); yyerrok; };
 enumeraciones: '[' expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
 	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
