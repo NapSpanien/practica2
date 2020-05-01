@@ -47,64 +47,64 @@ fin : expresionCondicional
 
 
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
-	| cadenaMult ',' CTC_CADENA {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}
-	| cadenaMult ',' error {yyerrok; printf("\ncadenaMult -> cadenaMult , error "); }
+	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}
+	| cadenaMult ',' error        {yyerrok; printf("\ncadenaMult -> cadenaMult , error "); }
 ;
 nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
 ;
 
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
-	| expresion ',' expresion {printf("\nexpresionMult -> expresion , expresion");}
-	| expresion ',' error {printf("\nexpresionMult -> expresion , error");}
+	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
+	| expresion ',' error               {printf("\nexpresionMult -> expresion , error");}//TODO acabar error
 ;
 expresion: primario {printf("\nexpresion -> primario");}
 ;
 primario: literal {printf("\nprimario -> literal");}
-	| objeto {printf("\nprimario -> objeto");}
+	| objeto  {printf("\nprimario -> objeto");}
 	//| llamada_subprograma {printf("primario -> llamada_subprograma");}
 	//| OBJETO llamada_subprograma {printf("primario -> OBJETO llamada_subprograma");}
 	//| enumeraciones
 	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
 ;
-literal: VERDADERO {printf("\nliteral -> VERDADERO");}
-	| FALSO {printf("\nliteral -> FASLO");}
-	| CTC_ENTERA {printf("\nliteral -> CTC_ENTERA");}
-	| CTC_REAL {printf("\nliteral -> CTC_REAL");}
+literal: VERDADERO     {printf("\nliteral -> VERDADERO");}
+	| FALSO        {printf("\nliteral -> FASLO");}
+	| CTC_ENTERA   {printf("\nliteral -> CTC_ENTERA");}
+	| CTC_REAL     {printf("\nliteral -> CTC_REAL");}
 	| CTC_CARACTER {printf("\nliteral -> CTC_CARACTER");}
-	| CTC_CADENA {printf("\nliteral -> CTC_CADENA");}
+	| CTC_CADENA   {printf("\nliteral -> CTC_CADENA");}
 ;
 
 objeto: nombre  
 	| objeto '.' nombre {printf("\nobjeto -> objeto . nombre");}
-	| objeto '[' expresion ']' {printf("\nobjeto -> objeto [ expresion ]");}
+	| objeto '[' expresion ']'     {printf("\nobjeto -> objeto [ expresion ]");}
 	| objeto '[' expresionMult ']' {printf("\nobjeto -> objeto [ expresionMult ]");}
-	| objeto '{' CTC_CADENA '}' {printf("\nobjeto -> objeto { CTC_CADENA }");}
-	| objeto '{' cadenaMult '}' {printf("\nobjeto -> objeto { cadenaMult }");}
+	| objeto '{' CTC_CADENA '}'    {printf("\nobjeto -> objeto { CTC_CADENA }");}
+	| objeto '{' cadenaMult '}'    {printf("\nobjeto -> objeto { cadenaMult }");}
 ; 
 
 clausulaIteracion :  //TODO ACABAR
 ;
 //error: ERROR { printf("\error -> objeto [ expresion ]"); yyerrok; };
 enumeraciones: '[' expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
-	| '[' expresionMult ']' {printf("\nenumeraciones -> [ expresionMult ]");}
-	| '{' claveValor '}' {printf("\nenumeraciones -> [ claveValor ]");}
+	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
+	| '{' claveValor '}'     {printf("\nenumeraciones -> [ claveValor ]");}
 	| '{' claveValorMult '}' {printf("\nenumeraciones -> [ claveValorMultiple ]");}
-	| '{' campoValor '}' {printf("\nenumeraciones -> [ campoValor ]");}
+	| '{' campoValor '}'     {printf("\nenumeraciones -> [ campoValor ]");}
 	| '{' campoValorMult '}' {printf("\nenumeraciones -> [ campoValorMultiple ]");}
 ;
 
 claveValorMult: claveValor ',' claveValor {printf("\nclaveValorMult -> claveValor , claveValor");}
-	| claveValorMult ',' claveValor {printf("\nclaveValorMult -> claveValorMult , claveValor");}
+	| claveValorMult ',' claveValor   {printf("\nclaveValorMult -> claveValorMult , claveValor");}
 ;
 claveValor: CTC_CADENA FLECHA expresion {printf("\nclave_valor -> CTC_CADENA => expresion");}
 ;
 campoValorMult : campoValor ',' campoValor {printf("\ncampoValorMult -> campo_valor , campo_valor");}
-	| campoValorMult ',' campoValor {printf("\ncampoValorMult -> campoValorMult , campo_valor");}
+	| campoValorMult ',' campoValor    {printf("\ncampoValorMult -> campoValorMult , campo_valor");}
 ;
 campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
 ;
-expresionCondicional: expresion {printf("\nexpresionCondicional -> expresion");}
+expresionCondicional: expresion           {printf("\nexpresionCondicional -> expresion");}
 	| SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
 	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 ;
