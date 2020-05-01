@@ -43,12 +43,12 @@ fin : expresionCondicional
 ;
 
 
-identificadorMultiple: IDENTIFICADOR ',' IDENTIFICADOR {printf("IDENTIFICADOR ',' IDENTIFICADOR");}
-	| identificadorMultiple ',' IDENTIFICADOR {printf("identificadorMultiple ',' IDENTIFICADOR");}
+identificadorMultiple: IDENTIFICADOR ',' IDENTIFICADOR {printf("\nidentificadorMultiple -> IDENTIFICADOR ',' IDENTIFICADOR");}
+	| identificadorMultiple ',' IDENTIFICADOR {printf("\nidentificadorMultiple -> identificadorMultiple ',' IDENTIFICADOR");}
 ;
 
-especificacionTipo: nombre {printf("especificacionTipo -> nombre");}
-	| tipoNoEstructurado {printf("especificacionTipo -> tipoNoEstructurado");}
+especificacionTipo: nombre {printf("\nespecificacionTipo -> nombre");}
+	| tipoNoEstructurado {printf("\nespecificacionTipo -> tipoNoEstructurado");}
 ;
 
 tipoNoEstructurado: 
@@ -120,12 +120,15 @@ rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion DOS_PUNTOS e
 	| rango DOS_PUNTOS expresion {printf("\nrango -> rango DOS_PUNTOS expresion");}
 ;
 
-clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\n clausulaIteracion PARA IDENTIFICADOR EN expresion"):}
-	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nPARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
-	| REPETIR IDENTIFICADOR EN RANGO {printf("\n REPETIR IDENTIFICADOR EN RANGO");}
-	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nREPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
-	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf"\nREPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
-	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nREPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
+clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
+	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
+
+	| REPETIR IDENTIFICADOR EN RANGO {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO");}
+	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
+
+	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
+	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nlausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
+
 	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
 ;
 
