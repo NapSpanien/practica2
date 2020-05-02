@@ -26,10 +26,7 @@ int yyerror(char *s);
 %token CTC_CADENA IDENTIFICADOR CTC_ENTERA CTC_REAL DOS_PUNTOS CUATRO_PUNTOS
 %token ASIGNACION FLECHA INC DEC DESPI DESPD LEQ GEQ NEQ AND OR ASIG_SUMA ASIG_RESTA
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
-%token ERROR
 //%token <texto> IDENTIFICADOR
-%type <texto> errorT
-%type <texto> cadenaMult
 
 %right SI ENTONCES SINO
 %right PARA EN 
@@ -76,7 +73,6 @@ nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
 	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
-	| expresionMult ',' error 	    {printf("\nexpresionMult -> expresionMult ',' error");yyerrok;}
 ;
 
 expresion: primario {printf("\nexpresion -> primario");}
@@ -85,7 +81,7 @@ expresion: primario {printf("\nexpresion -> primario");}
     | primario '/' primario   {printf("\nexpresion -> primario / primario");}
     | primario INC            {printf("\nexpresion -> primario ++");}
     | primario DEC            {printf("\nexpresion -> primario --");}
-    | primario '\\' primario   {printf("\nexpresion -> primario \ primario");}
+    | primario '\\' primario  {printf("\nexpresion -> primario \ primario");}
     | primario '^' primario   {printf("\nexpresion -> primario ^ primario");}
     | primario DESPI primario {printf("\nexpresion -> primario <- primario");}
     | primario DESPD primario {printf("\nexpresion -> primario -> primario");}
