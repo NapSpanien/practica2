@@ -28,7 +28,6 @@ int yyerror(char *s);
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
 %token ERROR
 //%token <texto> IDENTIFICADOR
-%type <texto> errorT
 %type <texto> cadenaMult
 
 %right SI ENTONCES SINO
@@ -68,21 +67,17 @@ tipoNoEstructurado: //TODO acabar
 
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
 	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}
-; 
-errorT : error {printf("\nerror --->  error %s ", $$); }
 ;
+
 nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
 ;
 
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
 	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
-	| expresion ',' error               {printf("\nexpresionMult -> expresion , error ");yyerrok;}//TODO acabar error
-	| expresionMult ',' error 	    {printf("\nexpresionMult -> expresionMult ',' error");yyerrok;}
 ;
 
 expresion: primario {printf("\nexpresion -> primario");}
-	| error				    {printf("\nexpresion ->
 ;
 primario: literal {printf("\nprimario -> literal");}
 	| objeto  {printf("\nprimario -> objeto");}
@@ -147,6 +142,64 @@ clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion 
 
 	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
 ;
+
+instruccion: instruccionAsignacion {printf("\ninstruccion -> instruccionAsignacion");}
+	| instruccionDevolver 		 	{printf("\ninstruccion -> instruccionDevolver");}
+	| instruccionLlamada   			{printf("\ninstruccion -> instruccionLlamada");}
+	| instruccionSi				{printf("\ninstruccion -> instruccionSi"):}
+	| instruccionCasos			{printf("\ninstruccion -> instruccionCasos");}
+	| instruccionBucle			{printf("\ninstruccion -> instruccionBucle");}
+	| instruccionInterrupcion		{printf("\ninstruccion -> instruccionInterrupcion");}
+	| instruccionLanzamientoExcepcion	{printf("\ninstruccion -> instruccionLanzamientoExcepcion");}
+	| instruccionCapturaExcepcion		{printf("\ninstruccion -> instruccionCapturaExcepcion");}
+	| ';'					{printf("\ninstruccion -> ';'");}
+;
+
+instruccionAsignacion: objeto operadorAsignacion expresion ';' {printf("\ninstruccionAsignacion -> objeto op_asignacion expresion ';'");}
+;
+
+operadorAsignacion: ASIGNACION	{printf("\noperadorAsignacion -> ASIGNACION");}
+	| ASIG_SUMA			{printf("\noperadorAsignacion -> ASIG_SUMA");}
+	| ASIG_RESTO			{printf("\noperadorAsignacion -> ASIG_RESTO");}
+	| ASIG_MULT			{printf("\noperadorAsignacion -> ASIG_MULT");}
+	| ASIG_DIV			{printf("\noperadorAsignacion -> ASIG_DIV");}
+	| ASIG_RESTO			{printf("\noperadorAsignacion -> ASIG_RESTO");}
+	| ASIG_POT			{printf("\noperadorAsignacion -> ASIG_POT");}
+	| ASIG_DESPI			{printf("\noperadorAsignacion -> ASIG_DESPI");}
+	| ASIG_DESPD			{printf("\noperadorAsignacion -> ASIG_DESPD");}
+;
+
+instruccionDevolver: DEVOLVER ';'	{printf("\ninstruccionDevolver -> DEVOLVER ';'");}
+	| DEVOLVER expresion ';'	{printf("\ninstruccionDevolver -> DEVOLVER expresion ';'");}
+;
+
+instruccionLlamada: llamadaSubprograma ';'	{printf("\ninstruccionLlamada -> llamadaSubprograma ';'");}
+;
+
+definicionParametro: expresion {printf("\ndefinicionParametro -> expresion");}
+	| IDENTIFICADOR ASIGNACION expresion {printf("\ndefinicionParametro -> IDENTIFICADOR ASIGNACION expresion");}
+;
+
+definicionParametroMultiple: definicionParametro ',' definicionParametro {printf("\ndefinicionParametroMultiple -> definicionParametro ',' definicionParametro");}
+	| definicionParametroMultiple ',' definicionParametro {printf("\ndefinicionParametroMultiple -> definicionParametroMultiple ',' definicionParametro");}
+;
+
+
+llamadaSubprograma: nombre '(' '(' ')' ')' {printf("\nllamadaSubprograma -> nombre '(' '(' ')' ')'");}
+	| nombre '(' definicionParametro ')' {printf("\nllamadaSubprograma -> nombre '(' definicionParametro ')'"(;}
+	| nombre '(' definicionParametroMultiple ')' {printf("\nllamadaSubprograma -> nombre '(' definicionParametroMultiple ')'");}
+;
+
+instruccionSi: SI expresion ENTONCES instruccion FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccion FIN SI");}
+	| SI expresion ENTONCES instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple FIN SI");}
+	| SI expresion ENTONCES instruccion SINO instruccion FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccion SINO instruccion FIN SI");}
+	| SI expresion ENTONCES instruccion SINO instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccion SINO instruccionMultiple FIN SI");}
+	|SI expresion ENTONCES instruccionMultiple SINO instruccion FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccion");}
+	SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple");}
+;
+	
+
+
 
 
 
