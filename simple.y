@@ -68,7 +68,6 @@ tipoNoEstructurado: //TODO acabar
 
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
 	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}
-	| cadenaMult ',' errorT        {yyerrok; printf("\ncadenaMult -> cadenaMult , error ->%s<-",$$); }
 ; 
 errorT : error {printf("\nerror --->  error %s ", $$); }
 ;
@@ -83,6 +82,7 @@ expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresio
 ;
 
 expresion: primario {printf("\nexpresion -> primario");}
+	| error				    {printf("\nexpresion ->
 ;
 primario: literal {printf("\nprimario -> literal");}
 	| objeto  {printf("\nprimario -> objeto");}
