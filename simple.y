@@ -82,10 +82,6 @@ cuando: CUANDO expresion {printf("\ncuando -> CUANDO expresion");}//TODO puede d
 instruccionLanzamientoExcepcion: LANZA nombre ';' {printf("\ninstruccionLanzamientoExcepcion -> LANZA nombre ; ");}
 ;
 
-instruccion: CTC_CADENA ';' {printf("\nintruccion -> ctcCadena ;");}//VACIO  TODO instruccion
-	| ';'
-;
-
 instruccionMultiple: instruccion instruccion {printf("\ninstruccionMultiple -> instruccion instruccion");}
 	| instruccionMultiple instruccion {printf("\ninstruccionMultiple -> instruccionMultiple instruccion");}
 ;
@@ -103,12 +99,12 @@ entradas: entradaDosP entrada {printf("\nentradas -> entrada : entrada");}//HICE
 	 | entrada {printf("\nentradas -> entrada");}
 ;
 entrada: expresion {printf("\nentrada -> expresion");}
-	| expresion DOS_PUNTOS instruccion {printf("\nentrada -> expresion DOS_PUNTOS instruccion");}
+	| expresion DOS_PUNTOS expresion {printf("\nentrada -> expresion DOS_PUNTOS expresion");}
 	| OTRO {printf("\nentrada -> OTRO");}
 ;
 entradaDosP: entrada ':' {printf("\nentradaDosP -> entrada : ");}
 	| entradaDosP entrada ':' {printf("\nentradaDosP -> entradaDosP entrada : ");}
-
+;
 intruccionBucle: IDENTIFICADOR ':' clausulaIteracion instruccion FIN BUCLE {printf("\nintruccionBucle -> IDENTIFICADOR : clausulaIteracion instruccion FIN BUCLE");}
 	| IDENTIFICADOR ':' clausulaIteracion instruccionMultiple FIN BUCLE {printf("\nintruccionBucle -> IDENTIFICADOR : clausulaIteracion instruccionMultiple FIN BUCLE");}
 	| clausulaIteracion instruccion FIN BUCLE {printf("\nintruccionBucle -> clausulaIteracion instruccion FIN BUCLE");}
@@ -204,7 +200,7 @@ primario: literal {printf("\nprimario -> literal");}
 	| objeto  {printf("\nprimario -> objeto");}
 	//| llamada_subprograma {printf("primario -> llamada_subprograma");}
 	//| OBJETO llamada_subprograma {printf("primario -> OBJETO llamada_subprograma");}
-	//| enumeraciones
+	| enumeraciones {printf("\nprimario -> enumeraciones ");}
 	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
 ;
 literal: VERDADERO     {printf("\nliteral -> VERDADERO");}
@@ -223,7 +219,7 @@ objeto: nombre
 	| objeto '{' cadenaMult '}'    {printf("\nobjeto -> objeto { cadenaMult }");}
 ; 
 
-//error: ERROR { printf("\error -> objeto [ expresion ]"); yyerrok; };
+
 enumeraciones: '[' expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
 	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
 	| '{' claveValor '}'     {printf("\nenumeraciones -> [ claveValor ]");}

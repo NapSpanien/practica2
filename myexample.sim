@@ -5,4 +5,4 @@ casos hoy es
 cuando lunes .. jueves => "trabajo" ;
 cuando viernes : sabado => "trabajo"; "fiesta";
 cuando otro => ;
-fin casos
+fin casos ;
