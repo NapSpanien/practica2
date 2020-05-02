@@ -75,8 +75,10 @@ nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
 	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
-	| expresion ',' error               {printf("\nexpresionMult -> expresion , error");}//TODO acabar error
+	| expresion ',' error               {printf("\nexpresionMult -> expresion , error");yyerrok;}//TODO acabar error
+	| expresionMult ',' error 	    {printf("\nexpresionMult -> expresionMult ',' error");yyerrok;}
 ;
+
 expresion: primario {printf("\nexpresion -> primario");}
 ;
 primario: literal {printf("\nprimario -> literal");}
@@ -142,6 +144,10 @@ clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion 
 
 	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
 ;
+
+
+
+
 
 
 

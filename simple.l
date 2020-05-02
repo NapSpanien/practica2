@@ -87,7 +87,7 @@ ERROR_CAR_HEX 	\%[xX](([0-9a-fA-F]*[g-zG-Z]+)+|[0-9a-fA-F]{3,})
                                   }
 
 
-{CONST_ENT} 			{ printf("\nlinea %d, ctc real: %s", linea, yytext); 
+{CONST_ENT} 			{ printf("\nlinea %d, ctc entera: %s", linea, yytext); 
 				  yylval.valor_entero = atoi(yytext);
 					return (CTC_ENTERA);
 				}
