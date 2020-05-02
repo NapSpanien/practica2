@@ -28,9 +28,20 @@ int yyerror(char *s);
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
 %token ERROR
 //%token <texto> IDENTIFICADOR
-%right FLECHA 
+
+
 %right SI ENTONCES SINO
+%right PARA EN 
+
 %right '{'
+%left '}'
+%right '['
+%left ']'
+%right '('
+%left ')'
+
+%right FLECHA 
+%right CUATRO_PUNTOS
 
 
 %%
@@ -51,7 +62,7 @@ especificacionTipo: nombre {printf("\nespecificacionTipo -> nombre");}
 	| tipoNoEstructurado {printf("\nespecificacionTipo -> tipoNoEstructurado");}
 ;
 
-tipoNoEstructurado: 
+tipoNoEstructurado: //TODO acabar
 ;
 
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
@@ -127,7 +138,7 @@ clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion 
 	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
 
 	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
-	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nlausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
+	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
 
 	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
 ;
