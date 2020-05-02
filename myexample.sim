@@ -1,6 +1,6 @@
 
 SI VERDADERO ENTONCES FALSO ;
 SI juan ENTONCES 4 SINO 21;
-Carmen { "cadena" , "zarzaparilla" , comia" };
+Carmen { "cadena" , "zarzaparilla" , comia" , "duro" } ;
 VERDADERO;
 { pepe => 32 , luisa => "casa" };

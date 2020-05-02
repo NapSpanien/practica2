@@ -28,7 +28,8 @@ int yyerror(char *s);
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
 %token ERROR
 //%token <texto> IDENTIFICADOR
-
+%type <texto> errorT
+%type <texto> cadenaMult
 
 %right SI ENTONCES SINO
 %right PARA EN 
@@ -67,7 +68,9 @@ tipoNoEstructurado: //TODO acabar
 
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
 	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}
-	| cadenaMult ',' error        {yyerrok; printf("\ncadenaMult -> cadenaMult , error "); }
+	| cadenaMult ',' errorT        {yyerrok; printf("\ncadenaMult -> cadenaMult , error ->%s<-",$$); }
+; 
+errorT : error {printf("\nerror --->  error %s ", $$); }
 ;
 nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
@@ -75,7 +78,7 @@ nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
 	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
-	| expresion ',' error               {printf("\nexpresionMult -> expresion , error");yyerrok;}//TODO acabar error
+	| expresion ',' error               {printf("\nexpresionMult -> expresion , error ");yyerrok;}//TODO acabar error
 	| expresionMult ',' error 	    {printf("\nexpresionMult -> expresionMult ',' error");yyerrok;}
 ;
 
