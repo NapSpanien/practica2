@@ -51,9 +51,13 @@ fin : expresionCondicional ';' {printf("\nfin -> expresionCondicional\n");}
     | fin objeto ';'{printf("\nfin -> objeto\n");}
 ;
 
+declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION expresion ';'
+	| identificadorMultiple ':' CONSTANTE especificacionTipo ASIGNACION expresion ';'
 
-identificadorMultiple: IDENTIFICADOR ',' IDENTIFICADOR {printf("\nidentificadorMultiple -> IDENTIFICADOR ',' IDENTIFICADOR");}
-	| identificadorMultiple ',' IDENTIFICADOR {printf("\nidentificadorMultiple -> identificadorMultiple ',' IDENTIFICADOR");}
+	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion ';'
+	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion ';'
+	| IDENTIFICADOR ':' especificacionTipo ';'
+	| identificadorMultiple ':' especificacionTipo ';'
 ;
 
 especificacionTipo: nombre {printf("\nespecificacionTipo -> nombre");}
@@ -62,6 +66,81 @@ especificacionTipo: nombre {printf("\nespecificacionTipo -> nombre");}
 
 tipoNoEstructurado: //TODO acabar
 ;
+
+instruccionInterrupcion: SIGUIENTE cuando ';'  {printf("\ninstruccionInterrupcion -> siguiente ; ");}
+	| SALIR DE IDENTIFICADOR cuando ';' {printf("\ninstruccionInterrupcion -> salir de IDENTIFICADOR cuando ; ");}
+	| SALIR cuando ';' {printf("\ninstruccionInterrupcion -> salir cuando(?) ; ");}
+;
+
+cuando: CUANDO expresion {printf("\ncuando -> CUANDO expresion");}//TODO puede dar error salto reduccion
+	| 	 {printf("\ncuando -> nada ");}
+;
+
+instruccionLanzamientoExcepcion: LANZA nombre ';' {printf("\ninstruccionLanzamientoExcepcion -> LANZA nombre ; ");}
+;
+
+instruccion: //VACIO  TODO instruccion
+;
+
+instruccionMultiple: instruccion instruccion {printf("\ninstruccionMultiple -> instruccion instruccion");}
+	| instruccionMultiple instruccion {printf("\ninstruccionMultiple -> instruccionMultiple instruccion");}
+;
+
+
+intruccionBucle: IDENTIFICADOR ':' clausulaIteracion instruccion FIN BUCLE {printf("\nintruccionBucle -> IDENTIFICADOR : clausulaIteracion instruccion FIN BUCLE");}
+	| IDENTIFICADOR ':' clausulaIteracion instruccionMultiple FIN BUCLE {printf("\nintruccionBucle -> IDENTIFICADOR : clausulaIteracion instruccionMultiple FIN BUCLE");}
+	| clausulaIteracion instruccion FIN BUCLE {printf("\nintruccionBucle -> clausulaIteracion instruccion FIN BUCLE");}
+	| clausulaIteracion instruccionMultiple FIN BUCLE {printf("\nintruccionBucle -> clausulaIteracion instruccionMultiple FIN BUCLE");}
+;
+
+rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion DOS_PUNTOS expresion");}
+	| rango DOS_PUNTOS expresion {printf("\nrango -> rango DOS_PUNTOS expresion");}
+;
+
+clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
+	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
+
+	| REPETIR IDENTIFICADOR EN RANGO {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO");}
+	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
+
+	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
+	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
+
+	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
+;
+
+instruccionDeCapturaDeExcepcion: PRUEBA instruccion clausulas FIN PRUEBA {printf("\ninstrccuionCapturaDeExcepcion -> PRUEBA instruccion clausulas FIN PRUEBA");}
+	| PRUEBA instruccionMultiple clausulas FIN PRUEBA {printf("\ninstrccuionCapturaDeExcepcion -> prueba instruccion clausulas FIN PRUEBA");}
+;
+
+clausulasExcepcion: clausulaExcepcionGeneral {printf("\nclausulasExcepcion -> clausulaExcepcionGeneral");}
+	| clausulaExcepcionEspecifica clausulaExcepcionGeneral {printf("\nclausulasExcepcion -> clausulaExcepcionEspecifica clausulaExcepcionGeneral");}
+	| clausulaExcepcionEspecificaMultiple clausulaExcepcionGeneral {printf("\nclausulasExcepcion -> clausulaExcepcionEspecificaMultiple clausulaExcepcionGeneral");}
+;
+clausulaExcepcionEspecifica: EXCEPCION '(' nombre ')' instruccion {printf("\nclausulaExcepcionEspecifica -> EXCEPCION ( nombre ) intruccion");}
+	| EXCEPCION '(' nombre ')' instruccionMultiple {printf("\nclausulaExcepcionEspecifica -> EXCEPCION ( nombre ) instruccionMultiple");}
+;
+clausulaExcepcionEspecificaMultiple: clausulaExcepcionEspecifica clausulaExcepcionEspecifica{printf("\nclausulaExcepcionEspecificaMultiple -> clausulaExcepcionEspecifica clausulaExcepcionEspecifica");}
+	| clausulaExcepcionEspecificaMultiple clausulaExcepcionEspecifica{printf("\nclausulaExcepcionEspecificaMultiple -> clausulaExcepcionEspecificaMultiple clausulaExcepcionEspecifica");}
+;
+
+clausulaExcepcionGeneral: EXCEPCION instruccion {printf("\nclausulaExcepcionGeneral -> EXCEPCION instruccion");}
+	| EXCEPCION instruccionMultiple{printf("\nclausulaExcepcionGeneral -> EXCEPCION instruccionMultiple");}
+;
+
+clausulaFinalmente: FINALMENTE instruccion {printf("\nclausulaFinalmente -> FINALMENTE instruccion");}
+	| FINALMENTE instruccionMultiple {printf("\nclausulaFinalmente -> FINALMENTE instruccionMultiple");}
+;
+
+clausulas: clausulasExcepcion {printf("\nclausulas -> clausulasExcepcion");}
+	| clausulasExcepcion clausulaFinalmente {printf("\nclausulas -> clausulasExcepcion clausulaFinalmente");}
+	| clausulaFinalmente {printf("\nclausulas -> clausulaFinalmente");}
+;
+identificadorMultiple: IDENTIFICADOR ',' IDENTIFICADOR {printf("\nidentificadorMultiple -> IDENTIFICADOR ',' IDENTIFICADOR");}
+	| identificadorMultiple ',' IDENTIFICADOR {printf("\nidentificadorMultiple -> identificadorMultiple ',' IDENTIFICADOR");}
+;
+
+
 
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
 	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}	
@@ -146,23 +225,6 @@ expresionCondicional: expresion           {printf("\nexpresionCondicional -> exp
 	| SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
 	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 ;
-
-rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion DOS_PUNTOS expresion");}
-	| rango DOS_PUNTOS expresion {printf("\nrango -> rango DOS_PUNTOS expresion");}
-;
-
-clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
-	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
-
-	| REPETIR IDENTIFICADOR EN RANGO {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO");}
-	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
-
-	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
-	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
-
-	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
-;
-
 
 
 
