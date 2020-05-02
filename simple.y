@@ -31,6 +31,8 @@ int yyerror(char *s);
 %right SI ENTONCES SINO
 %right PARA EN 
 
+%left ':'
+
 %right '{'
 %left '}'
 %right '['
@@ -49,15 +51,16 @@ fin : expresionCondicional ';' {printf("\nfin -> expresionCondicional\n");}
     | fin enumeraciones ';' {printf("\nfin -> enumeraciones\n");}
     | fin expresionCondicional ';'{printf("\nfin -> expresionCondicional\n");}
     | fin objeto ';'{printf("\nfin -> objeto\n");}
+    | fin instruccionCasos ';' {printf("\nfin -> intruccionCasos\n");}
 ;
 
-declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION expresion ';'
-	| identificadorMultiple ':' CONSTANTE especificacionTipo ASIGNACION expresion ';'
+declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR : CONSTANTE especificacionTipo ASIGNACION expresion ;\n");}
+	| identificadorMultiple ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : CONSTANTE especificacionTipo ASIGNACION expresion ;\n");}
 
-	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion ';'
-	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion ';'
-	| IDENTIFICADOR ':' especificacionTipo ';'
-	| identificadorMultiple ':' especificacionTipo ';'
+	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion ';'{printf("\ndeclaracionObjeto -> IDENTIFICADOR : especificacionTipo ASIGNACION expresion ;\n");}
+	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : especificacionTipo ASIGNACION expresion ;\n");}
+	| IDENTIFICADOR ':' especificacionTipo ';'{printf("\ndeclaracionObjeto -> IDENTIFICADOR : especificacionTipo ;\n");}
+	| identificadorMultiple ':' especificacionTipo ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : especificacionTipo ;\n");}
 ;
 
 especificacionTipo: nombre {printf("\nespecificacionTipo -> nombre");}
@@ -79,13 +82,32 @@ cuando: CUANDO expresion {printf("\ncuando -> CUANDO expresion");}//TODO puede d
 instruccionLanzamientoExcepcion: LANZA nombre ';' {printf("\ninstruccionLanzamientoExcepcion -> LANZA nombre ; ");}
 ;
 
-instruccion: //VACIO  TODO instruccion
+instruccion: CTC_CADENA ';' {printf("\nintruccion -> ctcCadena ;");}//VACIO  TODO instruccion
+	| ';'
 ;
 
 instruccionMultiple: instruccion instruccion {printf("\ninstruccionMultiple -> instruccion instruccion");}
 	| instruccionMultiple instruccion {printf("\ninstruccionMultiple -> instruccionMultiple instruccion");}
 ;
 
+instruccionCasos: CASOS expresion ES caso FIN CASOS {printf("\ninstruccionCasos -> CASOS expresion ES caso FIN CASOS");}
+	| CASOS expresion ES casoMultiple FIN CASOS {printf("\ninstruccionCasos -> CASOS expresion ES casoMultiple FIN CASOS");}
+;
+casoMultiple: caso caso {printf("\ncasoMultiple -> caso caso");}
+	| casoMultiple caso {printf("\ncasoMultiple -> casoMultiple caso");}
+;
+caso: CUANDO entradas FLECHA instruccion {printf("\ncaso -> CUANDO entradas FLECHA instruccion");}
+	| CUANDO entradas FLECHA instruccionMultiple {printf("\ncaso -> CUANDO entradas FLECHA instruccionMultiple");}
+;
+entradas: entradaDosP entrada {printf("\nentradas -> entrada : entrada");}//HICE ALGO RARO AQUI
+	 | entrada {printf("\nentradas -> entrada");}
+;
+entrada: expresion {printf("\nentrada -> expresion");}
+	| expresion DOS_PUNTOS instruccion {printf("\nentrada -> expresion DOS_PUNTOS instruccion");}
+	| OTRO {printf("\nentrada -> OTRO");}
+;
+entradaDosP: entrada ':' {printf("\nentradaDosP -> entrada : ");}
+	| entradaDosP entrada ':' {printf("\nentradaDosP -> entradaDosP entrada : ");}
 
 intruccionBucle: IDENTIFICADOR ':' clausulaIteracion instruccion FIN BUCLE {printf("\nintruccionBucle -> IDENTIFICADOR : clausulaIteracion instruccion FIN BUCLE");}
 	| IDENTIFICADOR ':' clausulaIteracion instruccionMultiple FIN BUCLE {printf("\nintruccionBucle -> IDENTIFICADOR : clausulaIteracion instruccionMultiple FIN BUCLE");}
