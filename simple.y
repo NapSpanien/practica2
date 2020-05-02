@@ -47,10 +47,10 @@ int yyerror(char *s);
 %%
 //Parte 3.7 pag 12
 
-fin : expresionCondicional
-	| fin enumeraciones {printf("\nfin -> enumeraciones\n");}
-	| fin expresionCondicional {printf("\nfin -> expresionCondicional\n");}
-	| fin objeto {printf("\nfin -> objeto\n");}
+fin : expresionCondicional ';' {printf("\nfin -> expresionCondicional\n");}
+    | fin enumeraciones ';' {printf("\nfin -> enumeraciones\n");}
+    | fin expresionCondicional ';'{printf("\nfin -> expresionCondicional\n");}
+    | fin objeto ';'{printf("\nfin -> objeto\n");}
 ;
 
 
