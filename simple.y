@@ -78,6 +78,28 @@ expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresio
 ;
 
 expresion: primario {printf("\nexpresion -> primario");}
+    | primario '+' primario   {printf("\nexpresion -> primario + primario");}
+    | primario '-' primario   {printf("\nexpresion -> primario - primario");}
+    | primario '/' primario   {printf("\nexpresion -> primario / primario");}
+    | primario INC            {printf("\nexpresion -> primario ++");}
+    | primario DEC            {printf("\nexpresion -> primario --");}
+    | primario '\' primario   {printf("\nexpresion -> primario \ primario");}
+    | primario '^' primario   {printf("\nexpresion -> primario ^ primario");}
+    | primario DESPI primario {printf("\nexpresion -> primario <- primario");}
+    | primario DESPD primario {printf("\nexpresion -> primario -> primario");}
+    | primario '.' primario   {printf("\nexpresion -> primario . primario");}
+    | '[' primario ']'        {printf("\nexpresion -> [ primario ] ");} 
+    | '{' primario '}'        {printf("\nexpresion -> primario { primario");} 
+    | primario CUATRO_PUNTOS primario {printf("\nexpresion -> primario :: primario");}
+    | primario '<' primario {printf("\nexpresion -> primario < primario");}
+    | primario '>' primario {printf("\nexpresion -> primario > primario");}
+    | primario LEQ primario {printf("\nexpresion -> primario <= primario");}
+    | primario GEQ primario {printf("\nexpresion -> primario >= primario");}
+    | primario '=' primario {printf("\nexpresion -> primario = primario");}
+    | primario NEQ primario {printf("\nexpresion -> primario ~= primario");}
+    | primario '~' primario {printf("\nexpresion -> primario ~ primario");}
+    | primario AND primario {printf("\nexpresion -> primario /\ primario");}
+    | primario OR primario  {printf("\nexpresion -> primario \/ primario");}
 ;
 primario: literal {printf("\nprimario -> literal");}
 	| objeto  {printf("\nprimario -> objeto");}
