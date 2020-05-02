@@ -67,18 +67,15 @@ tipoNoEstructurado: //TODO acabar
 ;
 
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
-	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}
-	| cadenaMult ',' errorT        {yyerrok; printf("\ncadenaMult -> cadenaMult , error ->%s<-",$$); }
+	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}	
 ; 
-errorT : error {printf("\nerror --->  error %s ", $$); }
-;
+
 nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
 ;
 
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
 	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
-	| expresion ',' error               {printf("\nexpresionMult -> expresion , error ");yyerrok;}//TODO acabar error
 	| expresionMult ',' error 	    {printf("\nexpresionMult -> expresionMult ',' error");yyerrok;}
 ;
 
@@ -88,7 +85,7 @@ expresion: primario {printf("\nexpresion -> primario");}
     | primario '/' primario   {printf("\nexpresion -> primario / primario");}
     | primario INC            {printf("\nexpresion -> primario ++");}
     | primario DEC            {printf("\nexpresion -> primario --");}
-    | primario '\' primario   {printf("\nexpresion -> primario \ primario");}
+    | primario '\\' primario   {printf("\nexpresion -> primario \ primario");}
     | primario '^' primario   {printf("\nexpresion -> primario ^ primario");}
     | primario DESPI primario {printf("\nexpresion -> primario <- primario");}
     | primario DESPD primario {printf("\nexpresion -> primario -> primario");}
