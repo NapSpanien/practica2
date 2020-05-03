@@ -43,6 +43,19 @@ int yyerror(char *s);
 %right FLECHA 
 %right CUATRO_PUNTOS
 
+%left AND
+%left OR
+%nonassoc '~'
+%nonassoc '<' '>' GEQ LEQ NEW '='
+%left DESPI
+%left DESPD
+%left '+' '-'
+%left '*' '/' '\\'
+%right '^'
+%nonassoc INC
+%nonassoc DEC
+
+
 
 %%
 //Parte 3.7 pag 12
@@ -50,6 +63,7 @@ int yyerror(char *s);
 fin : expresionCondicional ';' {printf("\nfin -> expresionCondicional\n");}
     | fin enumeraciones ';' {printf("\nfin -> enumeraciones\n");}
     | fin expresionCondicional ';'{printf("\nfin -> expresionCondicional\n");}
+    | fin expresion ';' {printf("\nfin -> expresion\n");}
     | fin objeto ';'{printf("\nfin -> objeto\n");}
     | fin instruccionCasos ';' {printf("\nfin -> instruccionCasos\n");}
 ;
@@ -171,35 +185,49 @@ nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
 	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
 ;
-
-expresion: primario {printf("\nexpresion -> primario");}
-    | primario '+' primario   {printf("\nexpresion -> primario + primario");}
-    | primario '-' primario   {printf("\nexpresion -> primario - primario");}
-    | primario '/' primario   {printf("\nexpresion -> primario / primario");}
-    | primario INC            {printf("\nexpresion -> primario ++");}
-    | primario DEC            {printf("\nexpresion -> primario --");}
-    | primario '\\' primario  {printf("\nexpresion -> primario \ primario");}
-    | primario '^' primario   {printf("\nexpresion -> primario ^ primario");}
-    | primario DESPI primario {printf("\nexpresion -> primario <- primario");}
-    | primario DESPD primario {printf("\nexpresion -> primario -> primario");}
-    | primario '.' primario   {printf("\nexpresion -> primario . primario");}
-    | '[' primario ']'        {printf("\nexpresion -> [ primario ] ");} 
-    | '{' primario '}'        {printf("\nexpresion -> primario { primario");} 
-    | primario CUATRO_PUNTOS primario {printf("\nexpresion -> primario :: primario");}
-    | primario '<' primario {printf("\nexpresion -> primario < primario");}
-    | primario '>' primario {printf("\nexpresion -> primario > primario");}
-    | primario LEQ primario {printf("\nexpresion -> primario <= primario");}
-    | primario GEQ primario {printf("\nexpresion -> primario >= primario");}
-    | primario '=' primario {printf("\nexpresion -> primario = primario");}
-    | primario NEQ primario {printf("\nexpresion -> primario ~= primario");}
-    | primario '~' primario {printf("\nexpresion -> primario ~ primario");}
-    | primario AND primario {printf("\nexpresion -> primario /\ primario");}
-    | primario OR primario  {printf("\nexpresion -> primario \/ primario");}
+clase :
 ;
+
+
+expresion: expresion '+' expresion {printf("\nexpresion -> expresion '+' expresion");}
+	| expresion '-' expresion {printf("\nexpresion -> expresion - expresion");}
+	| expresion '/' expresion {printf("\nexpresion -> expresion / expresion");}
+	| expresion '\\' expresion {printf("\nexpresion -> expresion \\ expresion");}
+	| expresion '*' expresion {printf("\nexpresion -> expresion * expresion");}
+	| expresion DESPI expresion {printf("\nexpresion -> expresion <- expresion");}
+	| expresion DESPI expresion {printf("\nexpresion -> expresion -> expresion");}
+	| expresion '.' expresion {printf("\nexpresion -> expresion . expresion");}
+	| '[' expresion ']'        {printf("\nexpresion -> [ expresion ] ");} 
+	| '{' expresion '}'        {printf("\nexpresion -> { expresion } ");} 
+	| expresion CUATRO_PUNTOS expresion {printf("\nexpresion -> expresion :: expresion");}
+	| expresion '<' expresion {printf("\nexpresion -> expresion < expresion");}
+	| expresion '>' expresion {printf("\nexpresion -> expresion > expresion");}
+	| expresion LEQ expresion {printf("\nexpresion -> expresion <= expresion");}
+	| expresion GEQ expresion {printf("\nexpresion -> expresion >= expresion");}
+	| expresion '=' expresion {printf("\nexpresion -> expresion = expresion");}
+	| expresion NEQ expresion {printf("\nexpresion -> expresion NEQ expresion");}
+	| expresion '~' expresion {printf("\nexpresion -> expresion ~ expresion");}
+	| expresion AND expresion {printf("\nexpresion -> expresion AND expresion");}
+	| expresion OR expresion {printf("\nexpresion -> expresion OR expresion");}
+	| expresionPotencia {printf("\nexpresion -> expresionPotencia");}
+;
+expresionPotencia: expresionPosfija {printf("\nexpresionPotencia -> expresionPosfija");}
+	| expresionPosfija '^' expresionPotencia {printf("\nexpresionPotencia -> expresionPosfija ^ expresionPotencia");}
+;
+expresionPosfija: expresionUnaria {printf("\nexpresionPosfija -> expresionUnaria");}
+	| expresionUnaria operadorPosfijo {printf("\nexpresionPosfija -> expresionUnaria operadorPosfijo");}
+;
+operadorPosfijo: INC {printf("\noperadorPosfijo -> INC");}
+	| DEC {printf("\noperadorPosfijo -> DEC");}
+;
+expresionUnaria: primario {printf("\nexpresionUnaria -> primario");}
+	| '-' primario {printf("\nexpresionUnaria -> '-' primario");}
+;
+
 primario: literal {printf("\nprimario -> literal");}
 	| objeto  {printf("\nprimario -> objeto");}
-	| llamadaSubprograma {printf("primario -> llamada_subprograma");}
-	//| OBJETO llamada_subprograma {printf("primario -> OBJETO llamada_subprograma");}
+	| llamadaSubprograma {printf("\nprimario -> llamada_subprograma");}
+	| objeto llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
 	| enumeraciones {printf("\nprimario -> enumeraciones ");}
 	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
 ;
@@ -220,7 +248,7 @@ objeto: nombre
 ; 
 
 
-enumeraciones: '[' expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
+enumeraciones:  expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
 	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
 	| '{' claveValor '}'     {printf("\nenumeraciones -> [ claveValor ]");}
 	| '{' claveValorMult '}' {printf("\nenumeraciones -> [ claveValorMultiple ]");}
@@ -239,7 +267,7 @@ campoValorMult : campoValor ',' campoValor {printf("\ncampoValorMult -> campo_va
 ;
 campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
 ;
-expresionCondicional: expresion           {printf("\nexpresionCondicional -> expresion");}
+expresionCondicional: '[' expresion           {printf("\nexpresionCondicional -> expresion");}
 	| SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
 	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 ;
@@ -470,7 +498,7 @@ int yywrap() {
 
 int main(int argc, char *argv[]) {
 
-  yydebug = 1;
+  yydebug = 0;
 
   if (argc < 2) {
     printf("Uso: ./simple NombreArchivo\n");

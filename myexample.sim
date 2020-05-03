@@ -9,3 +9,5 @@ cuando lunes .. jueves => trabajo() ;
 cuando viernes : sabado => trabajo(); fiesta();
 cuando otro => ;
 fin casos ;
+4 \ 9;
+2 * 2  +5 ;
