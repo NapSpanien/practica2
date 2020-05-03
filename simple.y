@@ -106,7 +106,7 @@ instruccionInterrupcion: SIGUIENTE cuando ';'  {printf("\ninstruccionInterrupcio
 	| SALIR cuando ';' {printf("\ninstruccionInterrupcion -> salir cuando(?) ; ");}
 ;
 
-cuando: CUANDO expresion {printf("\ncuando -> CUANDO expresion");}//TODO puede dar error salto reduccion
+cuando: CUANDO expresion {printf("\ncuando -> CUANDO expresion");} 
 	| 	 {printf("\ncuando -> nada ");}
 ;
 
@@ -298,16 +298,6 @@ instruccionSi: SI expresion ENTONCES instruccion FIN SI {printf("\ninstruccionSi
 	| SI expresion ENTONCES instruccion SINO instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccion SINO instruccionMultiple FIN SI");}
 	|SI expresion ENTONCES instruccionMultiple SINO instruccion FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccion");}
 	| SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple");}
-;
-
-declaracionObjeto: IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';'");}
-	| identificadorMultiple ';' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';'");}
-	| IDENTIFICADOR ';' especificacionTipo ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' especificacionTipo ';'");}
-	| IDENTIFICADOR ';' especificacionTipo ASIGNACION expresion ';'		{printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' especificacionTipo ASIGNACION expresion ';'");}
-	| IDENTIFICADOR ';' especificacionTipo ASIGNACION expresionMult ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' especificacionTipo ASIGNACION expresionMult ';'");}
-	| identificadorMultiple ';' especificacionTipo ';' {printf("\ndeclaracionObjeto -> identificadorMultiple ';' especificacionTipo ';'");}
-	| identificadorMultiple ';' especificacionTipo ASIGNACION expresion ';'		{printf("\ndeclaracionObjeto -> identificadorMultiple ';' especificacionTipo ASIGNACION expresion ';'");}
-	| identificadorMultiple ';' especificacionTipo ASIGNACION expresionMult ';'	{printf("\ndeclaracionObjeto -> identificadorMultiple ';' especificacionTipo ASIGNACION expresionMult ';'");}
 ;
 
 especificacionTipo: nombre 	 {printf("\nespecificacionTipo -> nombre");}
