@@ -101,10 +101,6 @@ declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION exp
 	| identificadorMultiple ':' especificacionTipo ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : especificacionTipo ;\n");}
 ;
 
-especificacionTipo: nombre {printf("\nespecificacionTipo -> nombre");}
-	| tipoNoEstructurado {printf("\nespecificacionTipo -> tipoNoEstructurado");}
-;
-
 
 instruccionInterrupcion: SIGUIENTE cuando ';'  {printf("\ninstruccionInterrupcion -> siguiente ; ");}
 	| SALIR DE IDENTIFICADOR cuando ';' {printf("\ninstruccionInterrupcion -> salir de IDENTIFICADOR cuando ; ");}
@@ -147,10 +143,6 @@ instruccionBucle: IDENTIFICADOR ':' clausulaIteracion instruccion FIN BUCLE {pri
 	| clausulaIteracion instruccionMultiple FIN BUCLE {printf("\ninstruccionBucle -> clausulaIteracion instruccionMultiple FIN BUCLE");}
 ;
 
-rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion DOS_PUNTOS expresion");}
-	| rango DOS_PUNTOS expresion {printf("\nrango -> rango DOS_PUNTOS expresion");}
-;
-
 clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
 	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
 
@@ -158,9 +150,8 @@ clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion 
 	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
 
 	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
-	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
-
-	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
+	| REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
+	| MIENTRAS expresion {printf("\nclausulaIteracion -> MIENTRAS expresion");}
 ;
 
 instruccionDeCapturaDeExcepcion: PRUEBA instruccion clausulas FIN PRUEBA {printf("\ninstrccuionCapturaDeExcepcion -> PRUEBA instruccion clausulas FIN PRUEBA");}
@@ -255,7 +246,7 @@ expresion: expresion '+' expresion {printf("\nexpresion -> expresion '+' expresi
 	| expresion '\\' expresion {printf("\nexpresion -> expresion \\ expresion");}
 	| expresion '*' expresion {printf("\nexpresion -> expresion * expresion");}
 	| expresion DESPI expresion {printf("\nexpresion -> expresion <- expresion");}
-	| expresion DESPI expresion {printf("\nexpresion -> expresion -> expresion");}
+	| expresion DESPD expresion {printf("\nexpresion -> expresion -> expresion");}
 	| expresion '.' expresion {printf("\nexpresion -> expresion . expresion");}
 	| '[' expresion ']'        {printf("\nexpresion -> [ expresion ] ");} 
 	| '{' expresion '}'        {printf("\nexpresion -> { expresion } ");} 
@@ -336,18 +327,6 @@ rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion :: expresion
 	| rango DOS_PUNTOS expresion {printf("\nrango -> rango :: expresion");}
 ;
 
-clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
-	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
-
-	| REPETIR IDENTIFICADOR EN RANGO {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO");}
-	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
-
-	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
-	|REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
-
-	| MIENTRAS expresion {printf("\nMIENTRAS expresion");}
-;
-
 instruccion: instruccionAsignacion {printf("\ninstruccion -> instruccionAsignacion");}
 	| instruccionDevolver 		 	{printf("\ninstruccion -> instruccionDevolver");}
 	| instruccionLlamada   			{printf("\ninstruccion -> instruccionLlamada");}
@@ -363,15 +342,15 @@ instruccion: instruccionAsignacion {printf("\ninstruccion -> instruccionAsignaci
 instruccionAsignacion: objeto operadorAsignacion expresion ';' {printf("\ninstruccionAsignacion -> objeto op_asignacion expresion ';'");}
 ;
 
-operadorAsignacion: ASIGNACION		{printf("\noperadorAsignacion -> ASIGNACION");}
-	| ASIG_SUMA			{printf("\noperadorAsignacion -> ASIG_SUMA");}
-	| ASIG_RESTO			{printf("\noperadorAsignacion -> ASIG_RESTO");}
-	| ASIG_MULT			{printf("\noperadorAsignacion -> ASIG_MULT");}
-	| ASIG_DIV			{printf("\noperadorAsignacion -> ASIG_DIV");}
-	| ASIG_RESTO			{printf("\noperadorAsignacion -> ASIG_RESTO");}
-	| ASIG_POT			{printf("\noperadorAsignacion -> ASIG_POT");}
-	| ASIG_DESPI			{printf("\noperadorAsignacion -> ASIG_DESPI");}
-	| ASIG_DESPD			{printf("\noperadorAsignacion -> ASIG_DESPD");}
+operadorAsignacion: ASIGNACION		{printf("\noperadorAsignacion -> ASIGNACION := ");}
+	| ASIG_SUMA			{printf("\noperadorAsignacion -> ASIG_SUMA :+");}
+	| ASIG_RESTO			{printf("\noperadorAsignacion -> ASIG_RESTO :\\");}
+	| ASIG_MULT			{printf("\noperadorAsignacion -> ASIG_MULT :*");}
+	| ASIG_DIV			{printf("\noperadorAsignacion -> ASIG_DIV :/");}
+	| ASIG_RESTA			{printf("\noperadorAsignacion -> ASIG_RESTA :-");}
+	| ASIG_POT			{printf("\noperadorAsignacion -> ASIG_POT :^");}
+	| ASIG_DESPI			{printf("\noperadorAsignacion -> ASIG_DESPI :< ");}
+	| ASIG_DESPD			{printf("\noperadorAsignacion -> ASIG_DESPD :> ");}
 ;
 
 instruccionDevolver: DEVOLVER ';'	{printf("\ninstruccionDevolver -> DEVOLVER ';'");}
