@@ -5,8 +5,10 @@ constructor subprograma esfera (radio : real) devolver esfera
 principio
 	esfera::radio := radio;
 fin subprograma
-principio
+
+PRINCIPIO
 	devolver 4/3*PI*esfera::radio^3; 
 fin suprograma
 
-FIN CLASE
+FIN CLASE 
+;

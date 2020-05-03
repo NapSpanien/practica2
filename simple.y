@@ -77,8 +77,6 @@ especificacionTipo: nombre {printf("\nespecificacionTipo -> nombre");}
 	| tipoNoEstructurado {printf("\nespecificacionTipo -> tipoNoEstructurado");}
 ;
 
-tipoNoEstructurado: //TODO acabar
-;
 
 instruccionInterrupcion: SIGUIENTE cuando ';'  {printf("\ninstruccionInterrupcion -> siguiente ; ");}
 	| SALIR DE IDENTIFICADOR cuando ';' {printf("\ninstruccionInterrupcion -> salir de IDENTIFICADOR cuando ; ");}
@@ -203,8 +201,8 @@ declaracionComponenteMultiple: declaracionComponente  declaracionComponente {pri
 	| declaracionComponenteMultiple  declaracionComponente {printf("\ndeclaracionComponenteMultiple -> declaracionComponenteMultiple  declaracionComponente");}
 ;
 visibilidad: PUBLICO {printf("\nvisibilidad -> PUBLICO");}
-	| PRIVADO {printf("\nvisibilidad -> PUBLICO");}
-	| PROTEGIDO {printf("\nvisibilidad -> PUBLICO");}
+	| PRIVADO {printf("\nvisibilidad -> PRIVADO");}
+	| PROTEGIDO {printf("\nvisibilidad -> PROTEGIDO");}
 ;
 componente: declaracionTipo {printf("\ncomponente -> declaracionTipo");}
 	|declaracionObjeto {printf("\ncomponente -> declaracionObjeto");}
