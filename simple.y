@@ -198,7 +198,7 @@ expresion: primario {printf("\nexpresion -> primario");}
 ;
 primario: literal {printf("\nprimario -> literal");}
 	| objeto  {printf("\nprimario -> objeto");}
-	//| llamada_subprograma {printf("primario -> llamada_subprograma");}
+	| llamada_subprograma {printf("primario -> llamada_subprograma");}
 	//| OBJETO llamada_subprograma {printf("primario -> OBJETO llamada_subprograma");}
 	| enumeraciones {printf("\nprimario -> enumeraciones ");}
 	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
@@ -302,7 +302,7 @@ definicionParametroMultiple: definicionParametro ',' definicionParametro {printf
 ;
 
 
-llamadaSubprograma: nombre '(' '(' ')' ')' {printf("\nllamadaSubprograma -> nombre '(' '(' ')' ')'");}
+llamadaSubprograma: nombre '(' ')' {printf("\nllamadaSubprograma -> nombre '(' ')'");}
 	| nombre '(' definicionParametro ')' {printf("\nllamadaSubprograma -> nombre '(' definicionParametro ')'");}
 	| nombre '(' definicionParametroMultiple ')' {printf("\nllamadaSubprograma -> nombre '(' definicionParametroMultiple ')'");}
 ;
@@ -314,6 +314,103 @@ instruccionSi: SI expresion ENTONCES instruccion FIN SI {printf("\ninstruccionSi
 	|SI expresion ENTONCES instruccionMultiple SINO instruccion FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccion");}
 	SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple");}
 ;
+
+declaracion: declaracionObjeto 		{printf("\ndeclaracion -> declaracionObjeto");}
+	| declaracionTipo 		{printf("\ndeclaracion -> declaracionTipo");}
+	| declaracionSubprograma 	{printf("\ndeclaracion -> declaracionSubprograma");}
+;
+
+declaracionObjeto: IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';'");}
+	| identificadorMultiple ';' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';'");}
+	| IDENTIFICADOR ';' especificacionTipo ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' especificacionTipo ';'");}
+	| IDENTIFICADOR ';' especificacionTipo ASIGNACION expresion ';'		{printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' especificacionTipo ASIGNACION expresion ';'");}
+	| IDENTIFICADOR ';' especificacionTipo ASIGNACION expresionMult ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' especificacionTipo ASIGNACION expresionMult ';'");}
+	| identificadorMultiple ';' especificacionTipo ';' {printf("\ndeclaracionObjeto -> identificadorMultiple ';' especificacionTipo ';'");}
+	| identificadorMultiple ';' especificacionTipo ASIGNACION expresion ';'		{printf("\ndeclaracionObjeto -> identificadorMultiple ';' especificacionTipo ASIGNACION expresion ';'");}
+	| identificadorMultiple ';' especificacionTipo ASIGNACION expresionMult ';'	{printf("\ndeclaracionObjeto -> identificadorMultiple ';' especificacionTipo ASIGNACION expresionMult ';'");}
+;
+
+especificacionTipo: nombre 	 {printf("\nespecificacionTipo -> nombre");}
+	| tipoNoEstructurado	 {printf("\nespecificacionTipo -> tipoNoEstructurado");}
+;
+
+declaracionTipo: TIPO IDENTIFICADOR ES tipoNoEstructurado ';' {printf("\ndeclaracionTipo -> TIPO IDENTIFICADOR ES tipoNoEstructurado ';'");}
+	| TIPO IDENTIFICADOR ES tipoEstructurado ';' {printf("\ndeclaracionTipo -> TIPO IDENTIFICADOR ES tipoEstructurado ';'");}
+;
+
+tipoNoEstructurado: tipoEscalar {printf("\ntipoNoEstructurado -> tipoEscalar");}
+	| tipoTabla {printf("\ntipoNoEstructurado -> tipoTabla");}
+	| tipoDiccionario {printf("\ntipoNoEstructurado -> tipoDiccionario");}
+;
+
+tipoEscalar: tipoBasico {printf("\ntipoEscalar -> tipoBasico");}
+	| SIGNO tipoBasico {printf("\ntipoEscalar -> SIGNO tipoBasico");}
+	| SIGNO tipoBasico longitud {printf("\ntipoEscalar -> SIGNO tipoBasico longitud");}
+	| SIGNO tipoBasico RANGO rango {printf("\ntipoEscalar -> SIGNO tipoBasico RANGO rango");}
+	| SIGNO tipoBasico longitud RANGO rango {printf("\ntipoEscalar -> SIGNO tipoBasico longitud RANGO rango");}
+	| tipoBasico longitud {printf("\ntipoEscalar -> tipoBasico longitud");}
+	| tipoBasico RANGO rango {printf("\ntipoEscalar -> tipoBasico RANGO rango");}
+	| tipoBasico longitud RANGO rango {printf("\ntipoEscalar -> tipoBasico longitud RANGO rango");}
+;
+
+longitud: CORTO 	{printf("\nlongitud -> CORTO");}
+	| LARGO 	{printf("\nlongitud -> LARGO");}
+;
+
+tipoBasico: BOOLEANO 	{printf("\ntipoBasico -> BOOLEANO");}
+	| CARACTER 	{printf("\ntipoBasico -> CARACTER");}
+	| ENTERO 	{printf("\ntipoBasico -> ENTERO");}
+	| REAL 		{printf("\ntipoBasico -> REAL");}
+;
+
+rango: expresion '..' expresion {printf("\nrango -> expresion '..' expresion");}
+	| expresion '..' expresionMult {printf("\nrango -> expresion '..' expresionMult");}
+;
+
+tipoTabla: TABLA '(' expresion '..' expresion ')' DE especificacionTipo {printf("\ntipoTabla -> TABLA '(' expresion '..' expresion ')' DE especificacionTipo");}
+	| LISTA DE especificacionTipo {printf("\ntipoTabla -> LISTA DE especificacionTipo");}
+;
+
+tipoDiccionario: DICCIONARIO DE especificacionTipo {printf("\ntipoDiccionario -> DICCIONARIO DE especificacionTipo");}
+;
+
+tipoEstructurado: tipoRegistro  {printf("\ntipoEstructurado -> tipoRegistro");}
+	| tipoEnumerado 	{printf("\ntipoEstructurado -> tipoEnumerado");}
+	| clase 		{printf("\ntipoEstructurado -> clase");}
+;
+
+tipoRegistro: REGISTRO campo FIN REGISTRO {printf("\ntipoRegistro -> REGISTRO campo FIN REGISTRO");}
+	| REGISTRO campoMultiple FIN REGISTRO {printf("\ntipoRegistro -> REGISTRO campoMultiple FIN REGISTRO");}
+;
+
+campo: IDENTIFICADOR ':' especificacionTipo ';' {printf("\ncampo -> IDENTIFICADOR ':' especificacionTipo ';'");}
+	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion ';' {printf("\ncampo -> IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion ';'");}
+	| identificadorMultiple ':' especificacionTipo ';' {printf("\ncampo -> identificadorMultiple ':' especificacionTipo ';'");}
+	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion ';' {printf("\ncampo -> identificadorMultiple ':' especificacionTipo ASIGNACION expresion ';'");}
+;
+
+campoMultiple: campo campo {printf("\ncampoMultiple -> campo campo");}
+	| campoMultiple campo {printf("\ncampoMultiple -> campoMultiple campo");}
+;
+
+tipoEnumerado: ENUMERACION elementoEnumeracion FIN ENUMERACION 				{printf("\ntipoEnumerado -> ENUMERACION elementoEnumeracion FIN ENUMERACION");}
+	| ENUMERACION elementoEnumeracionMultiple FIN ENUMERACION 			{printf("\ntipoEnumerado -> ENUMERACION elementoEnumeracionMultiple FIN ENUMERACION");}
+	| ENUMERACION DE tipoEscalar elementoEnumeracion FIN ENUMERACION 		{printf("\ntipoEnumerado -> ENUMERACION DE tipoEscalar elementoEnumeracion FIN ENUMERACION");}
+	| ENUMERACION DE tipoEscalar elementoEnumeracionMultiple FIN ENUMERACION	{printf("\ntipoEnumerado -> ENUMERACION DE tipoEscalar elementoEnumeracionMultiple FIN ENUMERACION");}
+;
+
+elementoEnumeracion: IDENTIFICADOR {printf("\nelementoEnumeracion -> IDENTIFICADOR");}
+	| IDENTIFICADOR ASIGNACION expresion {printf("\nelementoEnumeracion -> IDENTIFICADOR ASIGNACION expresion");}
+;
+
+elementoEnumeracionMultiple: elementoEnumeracion ',' elementoEnumeracion {printf("\nelementoEnumeracionMultiple -> elementoEnumeracion ',' elementoEnumeracion");}
+	| elementoEnumeracionMultiple ',' elementoEnumeracion {printf("\nelementoEnumeracionMultiple -> elementoEnumeracionMultiple ',' elementoEnumeracion");}
+;
+
+
+
+
+
 	
 
 
