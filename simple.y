@@ -239,88 +239,7 @@ modificador: CONSTRUCTOR {printf("\nmodificador -> CONSTRUCTOR");}
 	| FINAL  {printf("\nmodificador -> FINAL");}
 ;
 
-expresion: expresion '+' expresion {printf("\nexpresion -> expresion '+' expresion");}
-	| expresion '-' expresion {printf("\nexpresion -> expresion - expresion");}
-	| expresion '/' expresion {printf("\nexpresion -> expresion / expresion");}
-	| expresion '\\' expresion {printf("\nexpresion -> expresion \\ expresion");}
-	| expresion '*' expresion {printf("\nexpresion -> expresion * expresion");}
-	| expresion DESPI expresion {printf("\nexpresion -> expresion <- expresion");}
-	| expresion DESPD expresion {printf("\nexpresion -> expresion -> expresion");}
-	| expresion '.' expresion {printf("\nexpresion -> expresion . expresion");}
-	| '[' expresion ']'        {printf("\nexpresion -> [ expresion ] ");} 
-	| '{' expresion '}'        {printf("\nexpresion -> { expresion } ");} 
-	| expresion CUATRO_PUNTOS expresion {printf("\nexpresion -> expresion :: expresion");}
-	| expresion '<' expresion {printf("\nexpresion -> expresion < expresion");}
-	| expresion '>' expresion {printf("\nexpresion -> expresion > expresion");}
-	| expresion LEQ expresion {printf("\nexpresion -> expresion <= expresion");}
-	| expresion GEQ expresion {printf("\nexpresion -> expresion >= expresion");}
-	| expresion '=' expresion {printf("\nexpresion -> expresion = expresion");}
-	| expresion NEQ expresion {printf("\nexpresion -> expresion NEQ expresion");}
-	| expresion '~' expresion {printf("\nexpresion -> expresion ~ expresion");}
-	| expresion AND expresion {printf("\nexpresion -> expresion AND expresion");}
-	| expresion OR expresion {printf("\nexpresion -> expresion OR expresion");}
-	| expresionPotencia {printf("\nexpresion -> expresionPotencia");}
-;
-expresionPotencia: expresionPosfija {printf("\nexpresionPotencia -> expresionPosfija");}
-	| expresionPosfija '^' expresionPotencia {printf("\nexpresionPotencia -> expresionPosfija ^ expresionPotencia");}
-;
-expresionPosfija: expresionUnaria {printf("\nexpresionPosfija -> expresionUnaria");}
-	| expresionUnaria operadorPosfijo {printf("\nexpresionPosfija -> expresionUnaria operadorPosfijo");}
-;
-operadorPosfijo: INC {printf("\noperadorPosfijo -> INC");}
-	| DEC {printf("\noperadorPosfijo -> DEC");}
-;
-expresionUnaria: primario {printf("\nexpresionUnaria -> primario");}
-	| '-' primario {printf("\nexpresionUnaria -> '-' primario");}
-;
 
-primario: literal {printf("\nprimario -> literal");}
-	| objeto  {printf("\nprimario -> objeto");}
-	| llamadaSubprograma {printf("\nprimario -> llamada_subprograma");}
-	| objeto llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
-	| enumeraciones {printf("\nprimario -> enumeraciones ");}
-	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
-;
-literal: VERDADERO     {printf("\nliteral -> VERDADERO");}
-	| FALSO        {printf("\nliteral -> FASLO");}
-	| CTC_ENTERA   {printf("\nliteral -> CTC_ENTERA");}
-	| CTC_REAL     {printf("\nliteral -> CTC_REAL");}
-	| CTC_CARACTER {printf("\nliteral -> CTC_CARACTER");}
-	| CTC_CADENA   {printf("\nliteral -> CTC_CADENA");}
-;
-
-objeto: nombre  
-	| objeto '.' nombre {printf("\nobjeto -> objeto . nombre");}
-	| objeto '[' expresion ']'     {printf("\nobjeto -> objeto [ expresion ]");}
-	| objeto '[' expresionMult ']' {printf("\nobjeto -> objeto [ expresionMult ]");}
-	| objeto '{' CTC_CADENA '}'    {printf("\nobjeto -> objeto { CTC_CADENA }");}
-	| objeto '{' cadenaMult '}'    {printf("\nobjeto -> objeto { cadenaMult }");}
-; 
-
-
-enumeraciones:  expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
-	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
-	| '{' claveValor '}'     {printf("\nenumeraciones -> [ claveValor ]");}
-	| '{' claveValorMult '}' {printf("\nenumeraciones -> [ claveValorMultiple ]");}
-	| '{' campoValor '}'     {printf("\nenumeraciones -> [ campoValor ]");}
-	| '{' campoValorMult '}' {printf("\nenumeraciones -> [ campoValorMultiple ]");}
-;
-
-claveValorMult: claveValor ',' claveValor {printf("\nclaveValorMult -> claveValor , claveValor");}
-	| claveValorMult ',' claveValor   {printf("\nclaveValorMult -> claveValorMult , claveValor");}
-;
-
-claveValor: CTC_CADENA FLECHA expresion {printf("\nclave_valor -> CTC_CADENA => expresion");}
-;
-campoValorMult : campoValor ',' campoValor {printf("\ncampoValorMult -> campo_valor , campo_valor");}
-	| campoValorMult ',' campoValor    {printf("\ncampoValorMult -> campoValorMult , campo_valor");}
-;
-campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
-;
-expresionCondicional: '[' expresion           {printf("\nexpresionCondicional -> expresion");}
-	| SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
-	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
-;
 
 rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion :: expresion");}
 	| rango DOS_PUNTOS expresion {printf("\nrango -> rango :: expresion");}
@@ -334,7 +253,7 @@ instruccion: instruccionAsignacion {printf("\ninstruccion -> instruccionAsignaci
 	| instruccionBucle			{printf("\ninstruccion -> instruccionBucle");}
 	| instruccionInterrupcion		{printf("\ninstruccion -> instruccionInterrupcion");}
 	| instruccionLanzamientoExcepcion	{printf("\ninstruccion -> instruccionLanzamientoExcepcion");}
-	| instruccionDeCapturaDeExcepcion		{printf("\ninstruccion -> instruccionDeCapturaDeExcepcion");}
+	| instruccionDeCapturaDeExcepcion	{printf("\ninstruccion -> instruccionDeCapturaDeExcepcion");}
 	| ';'					{printf("\ninstruccion -> ';'");}
 ;
 
@@ -404,13 +323,13 @@ tipoNoEstructurado: tipoEscalar {printf("\ntipoNoEstructurado -> tipoEscalar");}
 	| tipoDiccionario {printf("\ntipoNoEstructurado -> tipoDiccionario");}
 ;
 
-tipoEscalar: tipoBasico {printf("\ntipoEscalar -> tipoBasico");}
-	| SIGNO tipoBasico {printf("\ntipoEscalar -> SIGNO tipoBasico");}
-	| SIGNO tipoBasico longitud {printf("\ntipoEscalar -> SIGNO tipoBasico longitud");}
-	| SIGNO tipoBasico RANGO rango {printf("\ntipoEscalar -> SIGNO tipoBasico RANGO rango");}
+tipoEscalar: tipoBasico 		{printf("\ntipoEscalar -> tipoBasico");}
+	| SIGNO tipoBasico 		{printf("\ntipoEscalar -> SIGNO tipoBasico");}
+	| SIGNO tipoBasico longitud 	{printf("\ntipoEscalar -> SIGNO tipoBasico longitud");}
+	| SIGNO tipoBasico RANGO rango 	{printf("\ntipoEscalar -> SIGNO tipoBasico RANGO rango");}
 	| SIGNO tipoBasico longitud RANGO rango {printf("\ntipoEscalar -> SIGNO tipoBasico longitud RANGO rango");}
-	| tipoBasico longitud {printf("\ntipoEscalar -> tipoBasico longitud");}
-	| tipoBasico RANGO rango {printf("\ntipoEscalar -> tipoBasico RANGO rango");}
+	| tipoBasico longitud 		{printf("\ntipoEscalar -> tipoBasico longitud");}
+	| tipoBasico RANGO rango 	{printf("\ntipoEscalar -> tipoBasico RANGO rango");}
 	| tipoBasico longitud RANGO rango {printf("\ntipoEscalar -> tipoBasico longitud RANGO rango");}
 ;
 
@@ -450,10 +369,10 @@ campoMultiple: campo campo {printf("\ncampoMultiple -> campo campo");}
 	| campoMultiple campo {printf("\ncampoMultiple -> campoMultiple campo");}
 ;
 
-tipoEnumerado: ENUMERACION elementoEnumeracion FIN ENUMERACION 				{printf("\ntipoEnumerado -> ENUMERACION elementoEnumeracion FIN ENUMERACION");}
-	| ENUMERACION elementoEnumeracionMultiple FIN ENUMERACION 			{printf("\ntipoEnumerado -> ENUMERACION elementoEnumeracionMultiple FIN ENUMERACION");}
-	| ENUMERACION DE tipoEscalar elementoEnumeracion FIN ENUMERACION 		{printf("\ntipoEnumerado -> ENUMERACION DE tipoEscalar elementoEnumeracion FIN ENUMERACION");}
-	| ENUMERACION DE tipoEscalar elementoEnumeracionMultiple FIN ENUMERACION	{printf("\ntipoEnumerado -> ENUMERACION DE tipoEscalar elementoEnumeracionMultiple FIN ENUMERACION");}
+tipoEnumerado: ENUMERACION elementoEnumeracion FIN ENUMERACION 			{printf("\ntipoEnumerado -> ENUMERACION elementoEnumeracion FIN ENUMERACION");}
+	| ENUMERACION elementoEnumeracionMultiple FIN ENUMERACION 		{printf("\ntipoEnumerado -> ENUMERACION elementoEnumeracionMultiple FIN ENUMERACION");}
+	| ENUMERACION DE tipoEscalar elementoEnumeracion FIN ENUMERACION 	{printf("\ntipoEnumerado -> ENUMERACION DE tipoEscalar elementoEnumeracion FIN ENUMERACION");}
+	| ENUMERACION DE tipoEscalar elementoEnumeracionMultiple FIN ENUMERACION {printf("\ntipoEnumerado -> ENUMERACION DE tipoEscalar elementoEnumeracionMultiple FIN ENUMERACION");}
 ;
 
 elementoEnumeracion: IDENTIFICADOR {printf("\nelementoEnumeracion -> IDENTIFICADOR");}
@@ -473,7 +392,7 @@ cabeceraSubprograma: IDENTIFICADOR 			{printf("\ncabeceraSubprograma -> IDENTIFI
 	| IDENTIFICADOR parametrizacion tipoResultado 	{printf("\ncabeceraSubprograma -> IDENTIFICADOR parametrizacion tipoResultado");}
 ;
 
-parametrizacion: '(' declaracionParametros ')' {printf("\nparametrizacion -> '(' declaracionParametros ')'");}
+parametrizacion: '(' declaracionParametros ')'  {printf("\nparametrizacion -> '(' declaracionParametros ')'");}
 	| '(' declaracionParametrosMultiple ')' {printf("\nparametrizacion -> '(' declaracionParametrosMultiple ')'");}
 ;
 
@@ -487,8 +406,8 @@ declaracionParametros: IDENTIFICADOR ':' especificacionTipo {printf("\ndeclaraci
 	| identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion {printf("\ndeclaracionParametros -> identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion");}
 ;
 
-declaracionParametrosMultiple: declaracionParametros ';' declaracionParametros ';' {printf("\ndeclaracionParametrosMultiple -> declaracionParametros ';' declaracionParametros ';'");}
-	| declaracionParametrosMultiple declaracionParametros ';' {printf("\ndeclaracionParametrosMultiple -> declaracionParametrosMultiple declaracionParametros ';'");}
+declaracionParametrosMultiple: declaracionParametros ';' declaracionParametros  {printf("\ndeclaracionParametrosMultiple -> declaracionParametros ';' declaracionParametros ';'");}
+	| declaracionParametrosMultiple ';' declaracionParametros ';' {printf("\ndeclaracionParametrosMultiple -> declaracionParametrosMultiple declaracionParametros ';'");}
 ;
 
 modo: VALOR {printf("\nmodo -> VALOR");}
@@ -520,7 +439,89 @@ codigoLibreria: libreriaMultiple exportaciones declaracion {printf("\ncodigoLibr
 	| declaracionMultiple {printf("\ncodigoLibreria -> declaracionMultiple");}
 ;
 
+expresion: expresion '+' expresion {printf("\nexpresion -> expresion '+' expresion");}
+	| expresion '-' expresion {printf("\nexpresion -> expresion - expresion");}
+	| expresion '/' expresion {printf("\nexpresion -> expresion / expresion");}
+	| expresion '\\' expresion {printf("\nexpresion -> expresion \\ expresion");}
+	| expresion '*' expresion {printf("\nexpresion -> expresion * expresion");}
+	| expresion DESPI expresion {printf("\nexpresion -> expresion <- expresion");}
+	| expresion DESPD expresion {printf("\nexpresion -> expresion -> expresion");}
+	| expresion '.' expresion {printf("\nexpresion -> expresion . expresion");}
+	| '[' expresion ']'        {printf("\nexpresion -> [ expresion ] ");} 
+	| '{' expresion '}'        {printf("\nexpresion -> { expresion } ");} 
+	| expresion CUATRO_PUNTOS expresion {printf("\nexpresion -> expresion :: expresion");}
+	| expresion '<' expresion {printf("\nexpresion -> expresion < expresion");}
+	| expresion '>' expresion {printf("\nexpresion -> expresion > expresion");}
+	| expresion LEQ expresion {printf("\nexpresion -> expresion <= expresion");}
+	| expresion GEQ expresion {printf("\nexpresion -> expresion >= expresion");}
+	| expresion '=' expresion {printf("\nexpresion -> expresion = expresion");}
+	| expresion NEQ expresion {printf("\nexpresion -> expresion NEQ expresion");}
+	| expresion '~' expresion {printf("\nexpresion -> expresion ~ expresion");}
+	| expresion AND expresion {printf("\nexpresion -> expresion AND expresion");}
+	| expresion OR expresion {printf("\nexpresion -> expresion OR expresion");}
+	| expresionPotencia 	{printf("\nexpresion -> expresionPotencia");}
+	//| nombre {printf("\nexpresion -> literal");}
+;
+expresionPotencia: expresionPosfija {printf("\nexpresionPotencia -> expresionPosfija");}
+	| expresionPosfija '^' expresionPotencia {printf("\nexpresionPotencia -> expresionPosfija ^ expresionPotencia");}
+;
+expresionPosfija: expresionUnaria {printf("\nexpresionPosfija -> expresionUnaria");}
+	| expresionUnaria operadorPosfijo {printf("\nexpresionPosfija -> expresionUnaria operadorPosfijo");}
+;
+operadorPosfijo: INC {printf("\noperadorPosfijo -> INC");}
+	| DEC {printf("\noperadorPosfijo -> DEC");}
+;
+expresionUnaria: primario {printf("\nexpresionUnaria -> primario");}
+	| '-' primario {printf("\nexpresionUnaria -> '-' primario");}
+;
 
+primario: literal {printf("\nprimario -> literal");}
+	| objeto  {printf("\nprimario -> objeto");}
+	| llamadaSubprograma {printf("\nprimario -> llamada_subprograma");}
+	| objeto llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
+	| enumeraciones {printf("\nprimario -> enumeraciones ");}
+	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
+;
+literal: VERDADERO     {printf("\nliteral -> VERDADERO");}
+	| FALSO        {printf("\nliteral -> FASLO");}
+	| CTC_ENTERA   {printf("\nliteral -> CTC_ENTERA");}
+	| CTC_REAL     {printf("\nliteral -> CTC_REAL");}
+	| CTC_CARACTER {printf("\nliteral -> CTC_CARACTER");}
+	| CTC_CADENA   {printf("\nliteral -> CTC_CADENA");}
+;
+
+objeto: nombre  {printf("\nobjeto -> nombre");}
+	| objeto '.' nombre {printf("\nobjeto -> objeto . nombre");}
+	| objeto '[' expresion ']'     {printf("\nobjeto -> objeto [ expresion ]");}
+	| objeto '[' expresionMult ']' {printf("\nobjeto -> objeto [ expresionMult ]");}
+	| objeto '{' CTC_CADENA '}'    {printf("\nobjeto -> objeto { CTC_CADENA }");}
+	| objeto '{' cadenaMult '}'    {printf("\nobjeto -> objeto { cadenaMult }");}
+; 
+
+
+enumeraciones:  expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
+	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
+	| '{' claveValor '}'     {printf("\nenumeraciones -> [ claveValor ]");}
+	| '{' claveValorMult '}' {printf("\nenumeraciones -> [ claveValorMultiple ]");}
+	| '{' campoValor '}'     {printf("\nenumeraciones -> [ campoValor ]");}
+	| '{' campoValorMult '}' {printf("\nenumeraciones -> [ campoValorMultiple ]");}
+;
+
+claveValorMult: claveValor ',' claveValor {printf("\nclaveValorMult -> claveValor , claveValor");}
+	| claveValorMult ',' claveValor   {printf("\nclaveValorMult -> claveValorMult , claveValor");}
+;
+
+claveValor: CTC_CADENA FLECHA expresion {printf("\nclave_valor -> CTC_CADENA => expresion");}
+;
+campoValorMult : campoValor ',' campoValor {printf("\ncampoValorMult -> campo_valor , campo_valor");}
+	| campoValorMult ',' campoValor    {printf("\ncampoValorMult -> campoValorMult , campo_valor");}
+;
+campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
+;
+expresionCondicional: '[' expresion           {printf("\nexpresionCondicional -> expresion");}
+	| SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
+	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
+;
 
 %%
 
@@ -536,7 +537,7 @@ int yywrap() {
 
 int main(int argc, char *argv[]) {
 
-  yydebug = 0;
+  yydebug = 1;
 
   if (argc < 2) {
     printf("Uso: ./simple NombreArchivo\n");
