@@ -60,12 +60,8 @@ int yyerror(char *s);
 %%
 //Parte 3.7 pag 12
 
-fin : expresionCondicional ';' {printf("\nfin -> expresionCondicional\n");}
-    | fin enumeraciones ';' {printf("\nfin -> enumeraciones\n");}
-    | fin expresionCondicional ';'{printf("\nfin -> expresionCondicional\n");}
-    | fin expresion ';' {printf("\nfin -> expresion\n");}
-    | fin objeto ';'{printf("\nfin -> objeto\n");}
-    | fin instruccionCasos ';' {printf("\nfin -> instruccionCasos\n");}
+fin : clase ';' {printf("\nfin -> clase\n");}
+    
 ;
 
 declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR : CONSTANTE especificacionTipo ASIGNACION expresion ;\n");}
@@ -181,13 +177,50 @@ cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_
 nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
 	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
 ;
+nombreMultiple: nombre ',' nombre {printf("\nnombreMultiple -> nombre , nombre");}
+	| nombreMultiple ',' nombre {printf("\nnombreMultiple -> nombreMultiple , nombre");}
 
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
 	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
 ;
-clase :
+clase : CLASE ULTIMA superclase declaracionComponente FIN CLASE {printf("\nclase -> CLASE ULTIMA superclase declaracionComponente FIN CLASE");}
+	| CLASE ULTIMA superclase declaracionComponenteMultiple FIN CLASE {printf("\nclase -> CLASE ULTIMA superclase declaracionComponenteMultiple FIN CLASE");}
+	| CLASE ULTIMA declaracionComponente FIN CLASE {printf("\nclase -> CLASE ULTIMA declaracionComponente FIN CLASE");}
+	| CLASE ULTIMA declaracionComponenteMultiple FIN CLASE {printf("\nclase -> CLASE ULTIMA declaracionComponenteMultiple FIN CLASE");}
+	| CLASE superclase declaracionComponente FIN CLASE {printf("\nclase -> CLASE superclase declaracionComponente FIN CLASE");}
+	| CLASE superclase declaracionComponenteMultiple FIN CLASE {printf("\nclase -> CLASE superclase declaracionComponenteMultiple FIN CLASE");}
+	| CLASE declaracionComponente FIN CLASE {printf("\nclase -> CLASE declaracionComponente FIN CLASE");}
+	| CLASE declaracionComponenteMultiple FIN CLASE {printf("\nclase -> CLASE declaracionComponenteMultiple FIN CLASE");}
 ;
 
+superclase: '(' nombre ')' {printf("\nsuperClase -> ( nombre )");}
+	| '(' nombreMultiple ')' {printf("\nsuperClase -> ( nombreMultiple )");}
+;
+declaracionComponente: visibilidad componente {printf("\ndeclaracionComponente -> visibilidad  componente");}
+	| componente {printf("\ndeclaracionComponente ->   componente");}
+;
+declaracionComponenteMultiple: declaracionComponente  declaracionComponente {printf("\ndeclaracionComponenteMultiple -> declaracionComponente  declaracionComponente");}
+	| declaracionComponenteMultiple  declaracionComponente {printf("\ndeclaracionComponenteMultiple -> declaracionComponenteMultiple  declaracionComponente");}
+;
+visibilidad: PUBLICO {printf("\nvisibilidad -> PUBLICO");}
+	| PRIVADO {printf("\nvisibilidad -> PUBLICO");}
+	| PROTEGIDO {printf("\nvisibilidad -> PUBLICO");}
+;
+componente: declaracionTipo {printf("\ncomponente -> declaracionTipo");}
+	|declaracionObjeto {printf("\ncomponente -> declaracionObjeto");}
+	| modificador declaracionSubprograma {printf("\ncomponente -> modificador declaracionSubprograma");}
+	|modificadorMultiple declaracionSubprograma {printf("\ncomponente -> modificadorMult declaracionSubprograma");}
+;
+modificadorMultiple: modificador ',' modificador {printf("\nmodificadorMultiple -> modificador ',' modificador");}
+	| modificadorMultiple ',' modificador {printf("\nmodificadorMultiple -> modificadorMultiple ',' modificador");}
+;
+modificador: CONSTRUCTOR {printf("\nmodificador -> CONSTRUCTOR");}
+	| DESTRUCTOR {printf("\nmodificador -> DESTRUCTOR");}
+	| GENERICO {printf("\nmodificador -> GENERIC");}
+	| ABSTRACTO {printf("\nmodificador -> ABSTRACTO");}
+	| ESPECIFICO {printf("\nmodificador -> ESPECIFICO");}
+	| FINAL  {printf("\nmodificador -> FINAL");}
+;
 
 expresion: expresion '+' expresion {printf("\nexpresion -> expresion '+' expresion");}
 	| expresion '-' expresion {printf("\nexpresion -> expresion - expresion");}
@@ -272,8 +305,8 @@ expresionCondicional: '[' expresion           {printf("\nexpresionCondicional ->
 	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 ;
 
-rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion DOS_PUNTOS expresion");}
-	| rango DOS_PUNTOS expresion {printf("\nrango -> rango DOS_PUNTOS expresion");}
+rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion :: expresion");}
+	| rango DOS_PUNTOS expresion {printf("\nrango -> rango :: expresion");}
 ;
 
 clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
@@ -395,10 +428,6 @@ tipoBasico: BOOLEANO 	{printf("\ntipoBasico -> BOOLEANO");}
 	| REAL 		{printf("\ntipoBasico -> REAL");}
 ;
 
-rango: expresion '..' expresion {printf("\nrango -> expresion '..' expresion");}
-	| expresion '..' expresionMult {printf("\nrango -> expresion '..' expresionMult");}
-;
-
 tipoTabla: TABLA '(' expresion '..' expresion ')' DE especificacionTipo {printf("\ntipoTabla -> TABLA '(' expresion '..' expresion ')' DE especificacionTipo");}
 	| LISTA DE especificacionTipo {printf("\ntipoTabla -> LISTA DE especificacionTipo");}
 ;
@@ -475,10 +504,10 @@ tipoResultado: DEVOLVER especificacionTipo {printf("\ntipoResultado -> DEVOLVER 
 
 cuerpoSubprograma: PRINCIPIO instruccion FIN {printf("\ncuerpoSubprograma -> PRINCIPIO instruccion FIN");}
 	| PRINCIPIO instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO instruccionMultiple FIN");}
-	| PRINCIPIO declaracion instruccion FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracion instruccion FIN");}
-	| PRINCIPIO declaracion instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracion instruccionMultiple FIN");}
-	| PRINCIPIO declaracionMultiple instruccion FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracionMultiple instruccion FIN");}
-	| PRINCIPIO declaracionMultiple instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracionMultiple instruccionMultiple FIN");}
+	| declaracion PRINCIPIO instruccion FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracion instruccion FIN");}
+	| declaracion PRINCIPIO  instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracion instruccionMultiple FIN");}
+	| declaracionMultiple PRINCIPIO instruccion FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracionMultiple instruccion FIN");}
+	| declaracionMultiple PRINCIPIO instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracionMultiple instruccionMultiple FIN");}
 ;
 
 

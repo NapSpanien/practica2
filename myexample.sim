@@ -1,13 +1,12 @@
 
-SI VERDADERO ENTONCES FALSO ;
-SI juan ENTONCES 4 SINO 21;
-Carmen { "cadena" , "zarzaparilla" , "comia" } ;
-VERDADERO;
-{ pepe => 32 , luisa => "casa" };
-casos hoy es
-cuando lunes .. jueves => trabajo() ;
-cuando viernes : sabado => trabajo(); fiesta();
-cuando otro => ;
-fin casos ;
-4 \ 9;
-2 * 2  +5 ;
+CLASE (forma)
+privado radio : real largo;
+constructor subprograma esfera (radio : real) devolver esfera
+principio
+	esfera::radio := radio;
+fin subprograma
+principio
+	devolver 4/3*PI*esfera::radio^3; 
+fin suprograma
+
+FIN CLASE
