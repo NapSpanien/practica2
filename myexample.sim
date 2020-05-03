@@ -1,11 +1,11 @@
 
 SI VERDADERO ENTONCES FALSO ;
 SI juan ENTONCES 4 SINO 21;
-Carmen { "cadena" , "zarzaparilla" , comia } ;
+Carmen { "cadena" , "zarzaparilla" , "comia" } ;
 VERDADERO;
 { pepe => 32 , luisa => "casa" };
 casos hoy es
-cuando lunes .. jueves => "trabajo" ;
-cuando viernes : sabado => "trabajo"; "fiesta";
+cuando lunes .. jueves => trabajo() ;
+cuando viernes : sabado => trabajo(); fiesta();
 cuando otro => ;
 fin casos ;

@@ -302,7 +302,7 @@ definicionParametroMultiple: definicionParametro ',' definicionParametro {printf
 ;
 
 
-llamadaSubprograma: nombre '(' '(' ')' ')' {printf("\nllamadaSubprograma -> nombre '(' '(' ')' ')'");}
+llamadaSubprograma: nombre '(' ')' {printf("\nllamadaSubprograma -> nombre '(' ')'");}
 	| nombre '(' definicionParametro ')' {printf("\nllamadaSubprograma -> nombre '(' definicionParametro ')'");}
 	| nombre '(' definicionParametroMultiple ')' {printf("\nllamadaSubprograma -> nombre '(' definicionParametroMultiple ')'");}
 ;
