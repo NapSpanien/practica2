@@ -58,10 +58,38 @@ int yyerror(char *s);
 
 
 %%
-//Parte 3.7 pag 12
+programa: definicionPrograma {printf("\nprograma -> definicionPrograma");}
+	| definicionLibreria {printf("\nprograma -> definicionLibreria");}
+;
 
-fin : clase ';' {printf("\nfin -> clase\n");}
-    
+definicionPrograma: PROGRAMA IDENTIFICADOR ';' codigoPrograma {printf("\ndefinicionPrograma -> PROGRAMA IDENTIFICADOR ; codigoPrograma");}
+;
+
+codigoPrograma: libreriaMultiple cuerpoSubprograma {printf("\ndefinicionPrograma -> libreriaMultiple cuerpoSubprograma");}
+	| libreria cuerpoSubprograma {printf("\ndefinicionPrograma -> libreria cuerpoSubprograma");}
+	| cuerpoSubprograma {printf("\ndefinicionPrograma -> cuerpoSubprograma");}
+;
+
+libreria: IMPORTAR LIBRERIA nombre COMO IDENTIFICADOR ';' {printf("\nlibreria -> IMPORTAR LIBRERIA nombre COMO IDENTIFICADOR");}
+	| IMPORTAR LIBRERIA nombre ';'{printf("\nlibreria -> IMPORTAR LIBRERIA nombre ");}
+	| DE LIBRERIA nombre IMPORTAR IDENTIFICADOR ';'{printf("\nlibreria -> DE LIBRERIA nombre IMPORTAR IDENTIFICADOR");}
+	| DE LIBRERIA nombre IMPORTAR identificadorMultiple ';'{printf("\nlibreria -> DE LIBRERIA nombre IMPORTAR identificadorMultiple");}
+;
+libreriaMultiple : libreria libreria {printf("\nlibreriaMultiple -> libreria libreria");}
+	| libreriaMultiple libreria {printf("\nlibreriaMultiple -> libreriaMultiple libreria");}
+;
+
+definicionLibreria: LIBRERIA IDENTIFICADOR ';' codigoLibreria  {printf("\ndefinicionLibreria -> LIBRERIA IDENTIFICADOR ; codigoLibreria");}
+;
+declaracionMultiple: declaracion declaracion {printf("\ndeclaracionMultiple -> declaracion declaracion");}
+	| declaracionMultiple declaracion {printf("\ndeclaracionMultiple -> declaracionMultiple declaracion");}
+;
+declaracion: declaracionObjeto 		{printf("\ndeclaracion -> declaracionObjeto");}
+	| declaracionTipo 		{printf("\ndeclaracion -> declaracionTipo");}
+	| declaracionSubprograma 	{printf("\ndeclaracion -> declaracionSubprograma");}
+;
+exportaciones: EXPORTAR nombreMultiple ';'{printf("\nexportaciones -> EXPORTAR nombreMultiple");}
+	| EXPORTAR nombre ';' {printf("\nexportaciones -> EXPORTAR nombre");}
 ;
 
 declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR : CONSTANTE especificacionTipo ASIGNACION expresion ;\n");}
@@ -205,7 +233,8 @@ visibilidad: PUBLICO {printf("\nvisibilidad -> PUBLICO");}
 	| PROTEGIDO {printf("\nvisibilidad -> PROTEGIDO");}
 ;
 componente: declaracionTipo {printf("\ncomponente -> declaracionTipo");}
-	|declaracionObjeto {printf("\ncomponente -> declaracionObjeto");}
+	| declaracionObjeto {printf("\ncomponente -> declaracionObjeto");}
+	| declaracionSubprograma {printf("\ncomponente -> declaracionSubprograma");}
 	| modificador declaracionSubprograma {printf("\ncomponente -> modificador declaracionSubprograma");}
 	|modificadorMultiple declaracionSubprograma {printf("\ncomponente -> modificadorMult declaracionSubprograma");}
 ;
@@ -334,7 +363,7 @@ instruccion: instruccionAsignacion {printf("\ninstruccion -> instruccionAsignaci
 instruccionAsignacion: objeto operadorAsignacion expresion ';' {printf("\ninstruccionAsignacion -> objeto op_asignacion expresion ';'");}
 ;
 
-operadorAsignacion: ASIGNACION	{printf("\noperadorAsignacion -> ASIGNACION");}
+operadorAsignacion: ASIGNACION		{printf("\noperadorAsignacion -> ASIGNACION");}
 	| ASIG_SUMA			{printf("\noperadorAsignacion -> ASIG_SUMA");}
 	| ASIG_RESTO			{printf("\noperadorAsignacion -> ASIG_RESTO");}
 	| ASIG_MULT			{printf("\noperadorAsignacion -> ASIG_MULT");}
@@ -371,16 +400,7 @@ instruccionSi: SI expresion ENTONCES instruccion FIN SI {printf("\ninstruccionSi
 	| SI expresion ENTONCES instruccion SINO instruccion FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccion SINO instruccion FIN SI");}
 	| SI expresion ENTONCES instruccion SINO instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccion SINO instruccionMultiple FIN SI");}
 	|SI expresion ENTONCES instruccionMultiple SINO instruccion FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccion");}
-	SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple");}
-;
-
-declaracion: declaracionObjeto 		{printf("\ndeclaracion -> declaracionObjeto");}
-	| declaracionTipo 		{printf("\ndeclaracion -> declaracionTipo");}
-	| declaracionSubprograma 	{printf("\ndeclaracion -> declaracionSubprograma");}
-;
-
-declaracionMultiple: declaracion declaracion {printf("\ndeclaracionMultiple -> declaracion declaracion");}
-	| declaracionMultiple declaracion {printf("\ndeclaracionMultiple -> declaracionMultiple declaracion");}
+	| SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple FIN SI {printf("\ninstruccionSi -> SI expresion ENTONCES instruccionMultiple SINO instruccionMultiple");}
 ;
 
 declaracionObjeto: IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';'");}
@@ -426,7 +446,7 @@ tipoBasico: BOOLEANO 	{printf("\ntipoBasico -> BOOLEANO");}
 	| REAL 		{printf("\ntipoBasico -> REAL");}
 ;
 
-tipoTabla: TABLA '(' expresion '..' expresion ')' DE especificacionTipo {printf("\ntipoTabla -> TABLA '(' expresion '..' expresion ')' DE especificacionTipo");}
+tipoTabla: TABLA '(' expresion DOS_PUNTOS expresion ')' DE especificacionTipo {printf("\ntipoTabla -> TABLA '(' expresion '..' expresion ')' DE especificacionTipo");}
 	| LISTA DE especificacionTipo {printf("\ntipoTabla -> LISTA DE especificacionTipo");}
 ;
 
@@ -469,24 +489,24 @@ elementoEnumeracionMultiple: elementoEnumeracion ',' elementoEnumeracion {printf
 declaracionSubprograma: SUBPROGRAMA cabeceraSubprograma cuerpoSubprograma SUBPROGRAMA {printf("\ndeclaracionSubprograma -> SUBPROGRAMA cabeceraSubprograma cuerpoSubprograma SUBPROGRAMA");}
 ;
 
-cabeceraSubprograma: IDENTIFICADOR 			{printf("cabeceraSubprograma -> IDENTIFICADOR");}
-	| IDENTIFICADOR parametrizacion 		{printf("cabeceraSubprograma -> IDENTIFICADOR parametrizacion");}
-	| IDENTIFICADOR tipoResultado 			{printf("cabeceraSubprograma -> IDENTIFICADOR tipoResultado");}
-	| IDENTIFICADOR parametrizacion tipoResultado 	{printf("cabeceraSubprograma -> IDENTIFICADOR parametrizacion tipoResultado");}
+cabeceraSubprograma: IDENTIFICADOR 			{printf("\ncabeceraSubprograma -> IDENTIFICADOR");}
+	| IDENTIFICADOR parametrizacion 		{printf("\ncabeceraSubprograma -> IDENTIFICADOR parametrizacion");}
+	| IDENTIFICADOR tipoResultado 			{printf("\ncabeceraSubprograma -> IDENTIFICADOR tipoResultado");}
+	| IDENTIFICADOR parametrizacion tipoResultado 	{printf("\ncabeceraSubprograma -> IDENTIFICADOR parametrizacion tipoResultado");}
 ;
 
-parametrizacion: '(' declaracionParametros ')' {printf("parametrizacion -> '(' declaracionParametros ')'");}
-	| '(' declaracionParametrosMultiple ')' {printf("parametrizacion -> '(' declaracionParametrosMultiple ')'");}
+parametrizacion: '(' declaracionParametros ')' {printf("\nparametrizacion -> '(' declaracionParametros ')'");}
+	| '(' declaracionParametrosMultiple ')' {printf("\nparametrizacion -> '(' declaracionParametrosMultiple ')'");}
 ;
 
-declaracionParametros: IDENTIFICADOR ':' especificacionTipo {printf("declaracionParametros -> IDENTIFICADOR ':' especificacionTipo");}
-	| IDENTIFICADOR ':' modo especificacionTipo {printf("declaracionParametros -> IDENTIFICADOR ':' modo especificacionTipo");}
-	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion");}
-	| IDENTIFICADOR ':' modo especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> IDENTIFICADOR ':' modo especificacionTipo ASIGNACION expresion");}
-	| identificadorMultiple ':' especificacionTipo {printf("declaracionParametros -> identificadorMultiple ':' especificacionTipo");}
-	| identificadorMultiple ':' modo especificacionTipo {printf("declaracionParametros -> identificadorMultiple ':' modo especificacionTipo");}
-	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> identificadorMultiple ':' especificacionTipo ASIGNACION expresion");}
-	| identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion");}
+declaracionParametros: IDENTIFICADOR ':' especificacionTipo {printf("\ndeclaracionParametros -> IDENTIFICADOR ':' especificacionTipo");}
+	| IDENTIFICADOR ':' modo especificacionTipo {printf("\ndeclaracionParametros -> IDENTIFICADOR ':' modo especificacionTipo");}
+	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion {printf("\ndeclaracionParametros -> IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion");}
+	| IDENTIFICADOR ':' modo especificacionTipo ASIGNACION expresion {printf("\ndeclaracionParametros -> IDENTIFICADOR ':' modo especificacionTipo ASIGNACION expresion");}
+	| identificadorMultiple ':' especificacionTipo {printf("\ndeclaracionParametros -> identificadorMultiple ':' especificacionTipo");}
+	| identificadorMultiple ':' modo especificacionTipo {printf("\ndeclaracionParametros -> identificadorMultiple ':' modo especificacionTipo");}
+	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion {printf("\ndeclaracionParametros -> identificadorMultiple ':' especificacionTipo ASIGNACION expresion");}
+	| identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion {printf("\ndeclaracionParametros -> identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion");}
 ;
 
 declaracionParametrosMultiple: declaracionParametros ';' declaracionParametros ';' {printf("\ndeclaracionParametrosMultiple -> declaracionParametros ';' declaracionParametros ';'");}
@@ -508,6 +528,19 @@ cuerpoSubprograma: PRINCIPIO instruccion FIN {printf("\ncuerpoSubprograma -> PRI
 	| declaracionMultiple PRINCIPIO instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracionMultiple instruccionMultiple FIN");}
 ;
 
+codigoLibreria: libreriaMultiple exportaciones declaracion {printf("\ncodigoLibreria -> libreriaMultiple exportaciones declaracion");}
+	| libreriaMultiple exportaciones declaracionMultiple {printf("\ncodigoLibreria -> libreriaMultiple exportaciones declaracionMultiple");}
+	| libreriaMultiple declaracion {printf("\ncodigoLibreria -> libreriaMultiple declaracion");}
+	| libreriaMultiple declaracionMultiple {printf("\ncodigoLibreria -> libreriaMultiple declaracionMultiple");}
+	| libreria exportaciones declaracion {printf("\ncodigoLibreria -> libreria exportaciones declaracion");}
+	| libreria exportaciones declaracionMultiple {printf("\ncodigoLibreria -> libreria exportaciones declaracionMultiple");}
+	| libreria  declaracion {printf("\ncodigoLibreria -> libreria declaracion");}
+	| libreria  declaracionMultiple {printf("\ncodigoLibreria -> libreria declaracionMultiple");}
+	| exportaciones declaracion {printf("\ncodigoLibreria -> exportaciones declaracion");}
+	| exportaciones declaracionMultiple {printf("\ncodigoLibreria -> exportaciones declaracionMultiple");}
+	| declaracion {printf("\ncodigoLibreria -> declaracion");}
+	| declaracionMultiple {printf("\ncodigoLibreria -> declaracionMultiple");}
+;
 
 
 
