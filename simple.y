@@ -198,7 +198,7 @@ expresion: primario {printf("\nexpresion -> primario");}
 ;
 primario: literal {printf("\nprimario -> literal");}
 	| objeto  {printf("\nprimario -> objeto");}
-	| llamada_subprograma {printf("primario -> llamada_subprograma");}
+	| llamadaSubprograma {printf("primario -> llamada_subprograma");}
 	//| OBJETO llamada_subprograma {printf("primario -> OBJETO llamada_subprograma");}
 	| enumeraciones {printf("\nprimario -> enumeraciones ");}
 	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
@@ -414,13 +414,13 @@ elementoEnumeracionMultiple: elementoEnumeracion ',' elementoEnumeracion {printf
 declaracionSubprograma: SUBPROGRAMA cabeceraSubprograma cuerpoSubprograma SUBPROGRAMA {printf("\ndeclaracionSubprograma -> SUBPROGRAMA cabeceraSubprograma cuerpoSubprograma SUBPROGRAMA");}
 ;
 
-cabeceraSubprograma IDENTIFICADOR 			{printf("cabeceraSubprograma -> IDENTIFICADOR");}
+cabeceraSubprograma: IDENTIFICADOR 			{printf("cabeceraSubprograma -> IDENTIFICADOR");}
 	| IDENTIFICADOR parametrizacion 		{printf("cabeceraSubprograma -> IDENTIFICADOR parametrizacion");}
 	| IDENTIFICADOR tipoResultado 			{printf("cabeceraSubprograma -> IDENTIFICADOR tipoResultado");}
 	| IDENTIFICADOR parametrizacion tipoResultado 	{printf("cabeceraSubprograma -> IDENTIFICADOR parametrizacion tipoResultado");}
 ;
 
-parametrizacion '(' declaracionParametros ')' {printf("parametrizacion -> '(' declaracionParametros ')'");}
+parametrizacion: '(' declaracionParametros ')' {printf("parametrizacion -> '(' declaracionParametros ')'");}
 	| '(' declaracionParametrosMultiple ')' {printf("parametrizacion -> '(' declaracionParametrosMultiple ')'");}
 ;
 
@@ -428,10 +428,10 @@ declaracionParametros: IDENTIFICADOR ':' especificacionTipo {printf("declaracion
 	| IDENTIFICADOR ':' modo especificacionTipo {printf("declaracionParametros -> IDENTIFICADOR ':' modo especificacionTipo");}
 	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion");}
 	| IDENTIFICADOR ':' modo especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> IDENTIFICADOR ':' modo especificacionTipo ASIGNACION expresion");}
-	| identificadorMult ':' especificacionTipo {printf("declaracionParametros -> identificadorMult ':' especificacionTipo");}
-	| identificadorMult ':' modo especificacionTipo {printf("declaracionParametros -> identificadorMult ':' modo especificacionTipo");}
-	| identificadorMult ':' especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> identificadorMult ':' especificacionTipo ASIGNACION expresion");}
-	| identificadorMult ':' modo especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> identificadorMult ':' modo especificacionTipo ASIGNACION expresion");}
+	| identificadorMultiple ':' especificacionTipo {printf("declaracionParametros -> identificadorMultiple ':' especificacionTipo");}
+	| identificadorMultiple ':' modo especificacionTipo {printf("declaracionParametros -> identificadorMultiple ':' modo especificacionTipo");}
+	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> identificadorMultiple ':' especificacionTipo ASIGNACION expresion");}
+	| identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion");}
 ;
 
 declaracionParametrosMultiple: declaracionParametros ';' declaracionParametros ';' {printf("\ndeclaracionParametrosMultiple -> declaracionParametros ';' declaracionParametros ';'");}
