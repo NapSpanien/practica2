@@ -320,6 +320,10 @@ declaracion: declaracionObjeto 		{printf("\ndeclaracion -> declaracionObjeto");}
 	| declaracionSubprograma 	{printf("\ndeclaracion -> declaracionSubprograma");}
 ;
 
+declaracionMultiple: declaracion declaracion {printf("\ndeclaracionMultiple -> declaracion declaracion");}
+	| declaracionMultiple declaracion {printf("\ndeclaracionMultiple -> declaracionMultiple declaracion");}
+;
+
 declaracionObjeto: IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';'");}
 	| identificadorMultiple ';' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' CONSTANTE especificacionTipo ASIGNACION expresion ';'");}
 	| IDENTIFICADOR ';' especificacionTipo ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR ';' especificacionTipo ';'");}
@@ -407,12 +411,47 @@ elementoEnumeracionMultiple: elementoEnumeracion ',' elementoEnumeracion {printf
 	| elementoEnumeracionMultiple ',' elementoEnumeracion {printf("\nelementoEnumeracionMultiple -> elementoEnumeracionMultiple ',' elementoEnumeracion");}
 ;
 
+declaracionSubprograma: SUBPROGRAMA cabeceraSubprograma cuerpoSubprograma SUBPROGRAMA {printf("\ndeclaracionSubprograma -> SUBPROGRAMA cabeceraSubprograma cuerpoSubprograma SUBPROGRAMA");}
+;
 
+cabeceraSubprograma IDENTIFICADOR 			{printf("cabeceraSubprograma -> IDENTIFICADOR");}
+	| IDENTIFICADOR parametrizacion 		{printf("cabeceraSubprograma -> IDENTIFICADOR parametrizacion");}
+	| IDENTIFICADOR tipoResultado 			{printf("cabeceraSubprograma -> IDENTIFICADOR tipoResultado");}
+	| IDENTIFICADOR parametrizacion tipoResultado 	{printf("cabeceraSubprograma -> IDENTIFICADOR parametrizacion tipoResultado");}
+;
 
+parametrizacion '(' declaracionParametros ')' {printf("parametrizacion -> '(' declaracionParametros ')'");}
+	| '(' declaracionParametrosMultiple ')' {printf("parametrizacion -> '(' declaracionParametrosMultiple ')'");}
+;
 
+declaracionParametros: IDENTIFICADOR ':' especificacionTipo {printf("declaracionParametros -> IDENTIFICADOR ':' especificacionTipo");}
+	| IDENTIFICADOR ':' modo especificacionTipo {printf("declaracionParametros -> IDENTIFICADOR ':' modo especificacionTipo");}
+	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion");}
+	| IDENTIFICADOR ':' modo especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> IDENTIFICADOR ':' modo especificacionTipo ASIGNACION expresion");}
+	| identificadorMult ':' especificacionTipo {printf("declaracionParametros -> identificadorMult ':' especificacionTipo");}
+	| identificadorMult ':' modo especificacionTipo {printf("declaracionParametros -> identificadorMult ':' modo especificacionTipo");}
+	| identificadorMult ':' especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> identificadorMult ':' especificacionTipo ASIGNACION expresion");}
+	| identificadorMult ':' modo especificacionTipo ASIGNACION expresion {printf("declaracionParametros -> identificadorMult ':' modo especificacionTipo ASIGNACION expresion");}
+;
 
-	
+declaracionParametrosMultiple: declaracionParametros ';' declaracionParametros ';' {printf("\ndeclaracionParametrosMultiple -> declaracionParametros ';' declaracionParametros ';'");}
+	| declaracionParametrosMultiple declaracionParametros ';' {printf("\ndeclaracionParametrosMultiple -> declaracionParametrosMultiple declaracionParametros ';'");}
+;
 
+modo: VALOR {printf("\nmodo -> VALOR");}
+	| REFERENCIA {printf("\nmodo -> REFERENCIA");}
+;
+
+tipoResultado: DEVOLVER especificacionTipo {printf("\ntipoResultado -> DEVOLVER especificacionTipo");}
+;
+
+cuerpoSubprograma: PRINCIPIO instruccion FIN {printf("\ncuerpoSubprograma -> PRINCIPIO instruccion FIN");}
+	| PRINCIPIO instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO instruccionMultiple FIN");}
+	| PRINCIPIO declaracion instruccion FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracion instruccion FIN");}
+	| PRINCIPIO declaracion instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracion instruccionMultiple FIN");}
+	| PRINCIPIO declaracionMultiple instruccion FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracionMultiple instruccion FIN");}
+	| PRINCIPIO declaracionMultiple instruccionMultiple FIN {printf("\ncuerpoSubprograma -> PRINCIPIO declaracionMultiple instruccionMultiple FIN");}
+;
 
 
 
