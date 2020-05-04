@@ -26,7 +26,6 @@ int yyerror(char *s);
 %token CTC_CADENA IDENTIFICADOR CTC_ENTERA CTC_REAL DOS_PUNTOS CUATRO_PUNTOS
 %token ASIGNACION FLECHA INC DEC DESPI DESPD LEQ GEQ NEQ AND OR ASIG_SUMA ASIG_RESTA
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
-%prec 
 %right SI ENTONCES SINO
 %right PARA EN 
 
@@ -53,6 +52,7 @@ int yyerror(char *s);
 %right '^'
 %nonassoc INC
 %nonassoc DEC
+%nonassoc MENOS_UNI
 
 
 
@@ -90,6 +90,77 @@ declaracion: declaracionObjeto 		{printf("\ndeclaracion -> declaracionObjeto");}
 exportaciones: EXPORTAR nombreMultiple ';'{printf("\nexportaciones -> EXPORTAR nombreMultiple");}
 	| EXPORTAR nombre ';' {printf("\nexportaciones -> EXPORTAR nombre");}
 ;
+
+expresion: expresion '+' expresion 	{printf("\nexpresion -> expresion '+' expresion");}
+	| expresion '-' expresion 	{printf("\nexpresion -> expresion - expresion");}
+	| expresion '/' expresion 	{printf("\nexpresion -> expresion / expresion");}
+	| expresion '\\' expresion 	{printf("\nexpresion -> expresion \\ expresion");}
+	| expresion '*' expresion 	{printf("\nexpresion -> expresion * expresion");}
+	| expresion DESPI expresion 	{printf("\nexpresion -> expresion <- expresion");}
+	| expresion DESPD expresion 	{printf("\nexpresion -> expresion -> expresion");}
+	| expresion '.' expresion 	{printf("\nexpresion -> expresion . expresion");}
+	| '[' expresion ']'        	{printf("\nexpresion -> [ expresion ] ");} 
+	| '{' expresion '}'        	{printf("\nexpresion -> { expresion } ");} 
+	| expresion CUATRO_PUNTOS expresion {printf("\nexpresion -> expresion :: expresion");}
+	| expresion '<' expresion 	{printf("\nexpresion -> expresion < expresion");}
+	| expresion '>' expresion 	{printf("\nexpresion -> expresion > expresion");}
+	| expresion LEQ expresion 	{printf("\nexpresion -> expresion <= expresion");}
+	| expresion GEQ expresion 	{printf("\nexpresion -> expresion >= expresion");}
+	| expresion '=' expresion 	{printf("\nexpresion -> expresion = expresion");}
+	| expresion NEQ expresion 	{printf("\nexpresion -> expresion NEQ expresion");}
+	| expresion '~' expresion 	{printf("\nexpresion -> expresion ~ expresion");}
+	| expresion AND expresion 	{printf("\nexpresion -> expresion AND expresion");}
+	| expresion OR expresion	{printf("\nexpresion -> expresion OR expresion");}
+	| expresionPotencia 		{printf("\nexpresion -> expresionPotencia");}
+;
+cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
+	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}	
+; 
+
+nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");} 
+	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
+;
+nombreMultiple: nombre ',' nombre {printf("\nnombreMultiple -> nombre , nombre");}
+	| nombreMultiple ',' nombre {printf("\nnombreMultiple -> nombreMultiple , nombre");}
+;
+
+expresionPotencia: expresionPosfija {printf("\nexpresionPotencia -> expresionPosfija");}
+	| expresionPosfija '^' expresionPotencia {printf("\nexpresionPotencia -> expresionPosfija ^ expresionPotencia");}
+;
+expresionPosfija: expresionUnaria {printf("\nexpresionPosfija -> expresionUnaria");}
+	| expresionUnaria operadorPosfijo {printf("\nexpresionPosfija -> expresionUnaria operadorPosfijo");}
+;
+operadorPosfijo: INC {printf("\noperadorPosfijo -> INC");}
+	| DEC {printf("\noperadorPosfijo -> DEC");}
+;
+expresionUnaria: primario {printf("\nexpresionUnaria -> primario");}
+	| '-' primario {printf("\nexpresionUnaria -> '-' primario");} %prec MENOS_UNI
+; 
+
+primario: literal {printf("\nprimario -> literal");}
+	| objeto {printf("\nprimario -> objeto");}
+	| llamadaSubprograma {printf("\nprimario -> llamada_subprograma");}
+	| objeto llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
+	| enumeraciones {printf("\nprimario -> enumeraciones ");}
+	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
+;
+literal: VERDADERO     {printf("\nliteral -> VERDADERO");}
+	| FALSO        {printf("\nliteral -> FASLO");}
+	| CTC_ENTERA   {printf("\nliteral -> CTC_ENTERA");}
+	| CTC_REAL     {printf("\nliteral -> CTC_REAL");}
+	| CTC_CARACTER {printf("\nliteral -> CTC_CARACTER");}
+	| CTC_CADENA   {printf("\nliteral -> CTC_CADENA");}
+;
+
+objeto: nombre  {printf("\nobjeto -> nombre");}
+	| objeto '.' nombre {printf("\nobjeto -> objeto . nombre");}
+	| objeto '[' expresion ']'     {printf("\nobjeto -> objeto [ expresion ]");}
+	| objeto '[' expresionMult ']' {printf("\nobjeto -> objeto [ expresionMult ]");}
+	| objeto '{' CTC_CADENA '}'    {printf("\nobjeto -> objeto { CTC_CADENA }");}
+	| objeto '{' cadenaMult '}'    {printf("\nobjeto -> objeto { cadenaMult }");}
+; 
+
+
 
 declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR : CONSTANTE especificacionTipo ASIGNACION expresion ;\n");}
 	| identificadorMultiple ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : CONSTANTE especificacionTipo ASIGNACION expresion ;\n");}
@@ -416,75 +487,6 @@ codigoLibreria: libreriaMultiple exportaciones declaracion {printf("\ncodigoLibr
 	| declaracion {printf("\ncodigoLibreria -> declaracion");}
 	| declaracionMultiple {printf("\ncodigoLibreria -> declaracionMultiple");}
 ;
-
-expresion: expresion '+' expresion 	{printf("\nexpresion -> expresion '+' expresion");}
-	| expresion '-' expresion 	{printf("\nexpresion -> expresion - expresion");}
-	| expresion '/' expresion 	{printf("\nexpresion -> expresion / expresion");}
-	| expresion '\\' expresion 	{printf("\nexpresion -> expresion \\ expresion");}
-	| expresion '*' expresion 	{printf("\nexpresion -> expresion * expresion");}
-	| expresion DESPI expresion 	{printf("\nexpresion -> expresion <- expresion");}
-	| expresion DESPD expresion 	{printf("\nexpresion -> expresion -> expresion");}
-	| expresion '.' expresion 	{printf("\nexpresion -> expresion . expresion");}
-	| '[' expresion ']'        	{printf("\nexpresion -> [ expresion ] ");} 
-	| '{' expresion '}'        	{printf("\nexpresion -> { expresion } ");} 
-	| expresion CUATRO_PUNTOS expresion {printf("\nexpresion -> expresion :: expresion");}
-	| expresion '<' expresion 	{printf("\nexpresion -> expresion < expresion");}
-	| expresion '>' expresion 	{printf("\nexpresion -> expresion > expresion");}
-	| expresion LEQ expresion 	{printf("\nexpresion -> expresion <= expresion");}
-	| expresion GEQ expresion 	{printf("\nexpresion -> expresion >= expresion");}
-	| expresion '=' expresion 	{printf("\nexpresion -> expresion = expresion");}
-	| expresion NEQ expresion 	{printf("\nexpresion -> expresion NEQ expresion");}
-	| expresion '~' expresion 	{printf("\nexpresion -> expresion ~ expresion");}
-	| expresion AND expresion 	{printf("\nexpresion -> expresion AND expresion");}
-	| expresion OR expresion	{printf("\nexpresion -> expresion OR expresion");}
-	| expresionPotencia 		{printf("\nexpresion -> expresionPotencia");}
-;
-cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
-	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}	
-; 
-
-nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
-	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
-;
-nombreMultiple: nombre ',' nombre {printf("\nnombreMultiple -> nombre , nombre");}
-	| nombreMultiple ',' nombre {printf("\nnombreMultiple -> nombreMultiple , nombre");}
-;
-
-expresionPotencia: expresionPosfija {printf("\nexpresionPotencia -> expresionPosfija");}
-	| expresionPosfija '^' expresionPotencia {printf("\nexpresionPotencia -> expresionPosfija ^ expresionPotencia");}
-;
-expresionPosfija: expresionUnaria {printf("\nexpresionPosfija -> expresionUnaria");}
-	| expresionUnaria operadorPosfijo {printf("\nexpresionPosfija -> expresionUnaria operadorPosfijo");}
-;
-operadorPosfijo: INC {printf("\noperadorPosfijo -> INC");}
-	| DEC {printf("\noperadorPosfijo -> DEC");}
-;
-expresionUnaria: primario {printf("\nexpresionUnaria -> primario");}
-	| '-' primario {printf("\nexpresionUnaria -> '-' primario");}
-; 
-
-primario: literal {printf("\nprimario -> literal");}
-	| objeto {printf("\nprimario -> objeto");}
-	| llamadaSubprograma {printf("\nprimario -> llamada_subprograma");}
-	| objeto llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
-	| enumeraciones {printf("\nprimario -> enumeraciones ");}
-	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
-;
-literal: VERDADERO     {printf("\nliteral -> VERDADERO");}
-	| FALSO        {printf("\nliteral -> FASLO");}
-	| CTC_ENTERA   {printf("\nliteral -> CTC_ENTERA");}
-	| CTC_REAL     {printf("\nliteral -> CTC_REAL");}
-	| CTC_CARACTER {printf("\nliteral -> CTC_CARACTER");}
-	| CTC_CADENA   {printf("\nliteral -> CTC_CADENA");}
-;
-
-objeto: nombre  {printf("\nobjeto -> nombre");}
-	| objeto '.' nombre {printf("\nobjeto -> objeto . nombre");}
-	| objeto '[' expresion ']'     {printf("\nobjeto -> objeto [ expresion ]");}
-	| objeto '[' expresionMult ']' {printf("\nobjeto -> objeto [ expresionMult ]");}
-	| objeto '{' CTC_CADENA '}'    {printf("\nobjeto -> objeto { CTC_CADENA }");}
-	| objeto '{' cadenaMult '}'    {printf("\nobjeto -> objeto { cadenaMult }");}
-; 
 
 
 enumeraciones:  expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
