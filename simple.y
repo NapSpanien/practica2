@@ -26,7 +26,7 @@ int yyerror(char *s);
 %token CTC_CADENA IDENTIFICADOR CTC_ENTERA CTC_REAL DOS_PUNTOS CUATRO_PUNTOS
 %token ASIGNACION FLECHA INC DEC DESPI DESPD LEQ GEQ NEQ AND OR ASIG_SUMA ASIG_RESTA
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
-%prec 
+
 %right SI ENTONCES SINO
 %right PARA EN 
 
@@ -42,8 +42,8 @@ int yyerror(char *s);
 %right FLECHA 
 %right CUATRO_PUNTOS
 
-%right AND
-%right OR
+%left AND
+%left OR
 %nonassoc '~'
 %nonassoc '<' '>' GEQ LEQ NEW '='
 %left DESPI
