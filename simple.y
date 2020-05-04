@@ -28,7 +28,7 @@ int yyerror(char *s);
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
 %right SI ENTONCES SINO
 %right PARA EN 
-
+%right FIN 
 %left ':'
 
 %right '{'
@@ -108,7 +108,7 @@ expresion: expresion '+' expresion 	{printf("\nexpresion -> expresion '+' expres
 	| expresion GEQ expresion 	{printf("\nexpresion -> expresion >= expresion");}
 	| expresion '=' expresion 	{printf("\nexpresion -> expresion = expresion");}
 	| expresion NEQ expresion 	{printf("\nexpresion -> expresion NEQ expresion");}
-	| expresion '~' expresion 	{printf("\nexpresion -> expresion ~ expresion");}
+	| '~' expresion 		{printf("\nexpresion -> expresion ~ expresion");}
 	| expresion AND expresion 	{printf("\nexpresion -> expresion AND expresion");}
 	| expresion OR expresion	{printf("\nexpresion -> expresion OR expresion");}
 	| expresionPotencia 		{printf("\nexpresion -> expresionPotencia");}
@@ -140,7 +140,7 @@ expresionUnaria: primario {printf("\nexpresionUnaria -> primario");}
 primario: literal {printf("\nprimario -> literal");}
 	| objeto {printf("\nprimario -> objeto");}
 	| llamadaSubprograma {printf("\nprimario -> llamada_subprograma");}
-	| objeto llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
+	| OBJETO llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
 	| enumeraciones {printf("\nprimario -> enumeraciones ");}
 	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
 ;
@@ -216,11 +216,11 @@ instruccionBucle: IDENTIFICADOR ':' clausulaIteracion instruccion FIN BUCLE {pri
 clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
 	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
 
-	| REPETIR IDENTIFICADOR EN RANGO {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO");}
+	| REPETIR IDENTIFICADOR EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO");}
 	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
 
-	| REPETIR IDENTIFICADOR EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO DESCENDENTE");}
-	| REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN RANGO DESCENDENTE");}
+	| REPETIR IDENTIFICADOR EN rango DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN rango DESCENDENTE");}
+	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango DESCENDENTE");}
 	| MIENTRAS expresion {printf("\nclausulaIteracion -> MIENTRAS expresion");}
 ;
 
@@ -304,7 +304,7 @@ rango: expresion DOS_PUNTOS expresion {printf("\nrango -> expresion :: expresion
 	| rango DOS_PUNTOS expresion {printf("\nrango -> rango :: expresion");}
 ;
 
-instruccion: instruccionAsignacion {printf("\ninstruccion -> instruccionAsignacion");}
+instruccion: instruccionAsignacion 		{printf("\ninstruccion -> instruccionAsignacion");}
 	| instruccionDevolver 		 	{printf("\ninstruccion -> instruccionDevolver");}
 	| instruccionLlamada   			{printf("\ninstruccion -> instruccionLlamada");}
 	| instruccionSi				{printf("\ninstruccion -> instruccionSi");}
