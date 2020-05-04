@@ -57,8 +57,8 @@ int yyerror(char *s);
 
 
 %%
-programa: definicionPrograma {printf("\nprograma -> definicionPrograma");}
-	| definicionLibreria {printf("\nprograma -> definicionLibreria");}
+programa: definicionPrograma {printf("\nEXITO programa -> definicionPrograma");}
+	| definicionLibreria {printf("\nEXITO programa -> definicionLibreria");}
 ;
 
 definicionPrograma: PROGRAMA IDENTIFICADOR ';' codigoPrograma {printf("\ndefinicionPrograma -> PROGRAMA IDENTIFICADOR ; codigoPrograma");}
@@ -87,8 +87,8 @@ declaracion: declaracionObjeto 		{printf("\ndeclaracion -> declaracionObjeto");}
 	| declaracionTipo 		{printf("\ndeclaracion -> declaracionTipo");}
 	| declaracionSubprograma 	{printf("\ndeclaracion -> declaracionSubprograma");}
 ;
-exportaciones: EXPORTAR nombreMultiple ';'{printf("\nexportaciones -> EXPORTAR nombreMultiple");}
-	| EXPORTAR nombre ';' {printf("\nexportaciones -> EXPORTAR nombre");}
+exportaciones: EXPORTAR nombreMultiple ';'{printf("\nexportaciones -> EXPORTAR nombreMultiple ;");}
+	| EXPORTAR nombre ';' {printf("\nexportaciones -> EXPORTAR nombre ;");}
 ;
 
 expresion: expresion '+' expresion 	{printf("\nexpresion -> expresion '+' expresion");}
@@ -99,7 +99,6 @@ expresion: expresion '+' expresion 	{printf("\nexpresion -> expresion '+' expres
 	| expresion DESPI expresion 	{printf("\nexpresion -> expresion <- expresion");}
 	| expresion DESPD expresion 	{printf("\nexpresion -> expresion -> expresion");}
 	| expresion '.' expresion 	{printf("\nexpresion -> expresion . expresion");}
-	| '[' expresion ']'        	{printf("\nexpresion -> [ expresion ] ");} 
 	| '{' expresion '}'        	{printf("\nexpresion -> { expresion } ");} 
 	| expresion CUATRO_PUNTOS expresion {printf("\nexpresion -> expresion :: expresion");}
 	| expresion '<' expresion 	{printf("\nexpresion -> expresion < expresion");}
@@ -108,7 +107,7 @@ expresion: expresion '+' expresion 	{printf("\nexpresion -> expresion '+' expres
 	| expresion GEQ expresion 	{printf("\nexpresion -> expresion >= expresion");}
 	| expresion '=' expresion 	{printf("\nexpresion -> expresion = expresion");}
 	| expresion NEQ expresion 	{printf("\nexpresion -> expresion NEQ expresion");}
-	| '~' expresion 		{printf("\nexpresion -> expresion ~ expresion");}
+	| '~' expresion 		{printf("\nexpresion -> ~ expresion");}
 	| expresion AND expresion 	{printf("\nexpresion -> expresion AND expresion");}
 	| expresion OR expresion	{printf("\nexpresion -> expresion OR expresion");}
 	| expresionPotencia 		{printf("\nexpresion -> expresionPotencia");}
@@ -153,7 +152,7 @@ literal: VERDADERO     {printf("\nliteral -> VERDADERO");}
 ;
 
 objeto: nombre  {printf("\nobjeto -> nombre");}
-	| objeto '.' nombre {printf("\nobjeto -> objeto . nombre");}
+	| objeto '.' IDENTIFICADOR {printf("\nobjeto -> objeto . nombre");}
 	| objeto '[' expresion ']'     {printf("\nobjeto -> objeto [ expresion ]");}
 	| objeto '[' expresionMult ']' {printf("\nobjeto -> objeto [ expresionMult ]");}
 	| objeto '{' CTC_CADENA '}'    {printf("\nobjeto -> objeto { CTC_CADENA }");}
@@ -172,13 +171,15 @@ declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION exp
 ;
 
 
-instruccionInterrupcion: SIGUIENTE cuando ';'  {printf("\ninstruccionInterrupcion -> siguiente ; ");}
-	| SALIR DE IDENTIFICADOR cuando ';' {printf("\ninstruccionInterrupcion -> salir de IDENTIFICADOR cuando ; ");}
-	| SALIR cuando ';' {printf("\ninstruccionInterrupcion -> salir cuando(?) ; ");}
+instruccionInterrupcion: SIGUIENTE ';'  {printf("\ninstruccionInterrupcion -> siguiente ; ");}
+	| SIGUIENTE cuando ';'		 {printf("\ninstruccionInterrupcion -> siguiente cuando ; ");}
+	| SALIR ';'	 {printf("\ninstruccionInterrupcion -> SALIR ; ");}
+	| SALIR DE IDENTIFICADOR ';' 	 {printf("\ninstruccionInterrupcion -> SALIR DE IDENTIFICADOR ; ");}
+	| SALIR cuando ';'		{printf("\ninstruccionInterrupcion -> SALIR cuando ; ");}
+	| SALIR DE IDENTIFICADOR cuando ';' {printf("\ninstruccionInterrupcion -> SALIR DE IDENTIFICADOR cuando ; ");}
 ;
 
 cuando: CUANDO expresion {printf("\ncuando -> CUANDO expresion");} 
-	| 	 {printf("\ncuando -> nada ");}
 ;
 
 instruccionLanzamientoExcepcion: LANZA nombre ';' {printf("\ninstruccionLanzamientoExcepcion -> LANZA nombre ; ");}
@@ -457,8 +458,8 @@ declaracionParametros: IDENTIFICADOR ':' especificacionTipo {printf("\ndeclaraci
 	| identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion {printf("\ndeclaracionParametros -> identificadorMultiple ':' modo especificacionTipo ASIGNACION expresion");}
 ;
 
-declaracionParametrosMultiple: declaracionParametros ';' declaracionParametros  {printf("\ndeclaracionParametrosMultiple -> declaracionParametros ';' declaracionParametros ';'");}
-	| declaracionParametrosMultiple ';' declaracionParametros ';' {printf("\ndeclaracionParametrosMultiple -> declaracionParametrosMultiple declaracionParametros ';'");}
+declaracionParametrosMultiple: declaracionParametros ';' declaracionParametros  {printf("\ndeclaracionParametrosMultiple -> declaracionParametros ';' declaracionParametros  ");}
+	| declaracionParametrosMultiple ';' declaracionParametros  {printf("\ndeclaracionParametrosMultiple -> declaracionParametrosMultiple declaracionParametros  ");}
 ;
 
 modo: VALOR {printf("\nmodo -> VALOR");}
@@ -491,13 +492,17 @@ codigoLibreria: libreriaMultiple exportaciones declaracion {printf("\ncodigoLibr
 ;
 
 enumeraciones:  expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
+	| expresionCondicional  clausulaIteracionMultiple ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
+	| '[' expresion ']'  {printf("\nenumeraciones -> [ expresion ]");}
 	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
 	| '{' claveValor '}'     {printf("\nenumeraciones -> [ claveValor ]");}
 	| '{' claveValorMult '}' {printf("\nenumeraciones -> [ claveValorMultiple ]");}
 	| '{' campoValor '}'     {printf("\nenumeraciones -> [ campoValor ]");}
 	| '{' campoValorMult '}' {printf("\nenumeraciones -> [ campoValorMultiple ]");}
 ;
-
+clausulaIteracionMultiple: clausulaIteracion clausulaIteracion
+	| clausulaIteracionMultiple clausulaIteracion
+;
 claveValorMult: claveValor ',' claveValor {printf("\nclaveValorMult -> claveValor , claveValor");}
 	| claveValorMult ',' claveValor   {printf("\nclaveValorMult -> claveValorMult , claveValor");}
 ;
@@ -510,8 +515,8 @@ campoValorMult : campoValor ',' campoValor {printf("\ncampoValorMult -> campo_va
 campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
 ;
 expresionCondicional: '[' expresion           {printf("\nexpresionCondicional -> expresion");}
-	| SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
-	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
+	| '[' SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
+	| '[' SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 ;
 
 reductora: error expresion {printf("\nreductora -> error expresion");}
