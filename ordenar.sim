@@ -9,6 +9,7 @@ primer subprograma: implementación del quicksort
 #}
 subprograma ordenarQuicksort
 
+  perico se folló a la madre del manuel67 :=
   n : constante entero := 20;
   datos : tabla (1..n) de entero;
   limIzdo : entero := 0;

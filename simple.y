@@ -311,9 +311,10 @@ instruccion: instruccionAsignacion 		{printf("\ninstruccion -> instruccionAsigna
 	| instruccionCasos			{printf("\ninstruccion -> instruccionCasos");}
 	| instruccionBucle			{printf("\ninstruccion -> instruccionBucle");}
 	| instruccionInterrupcion		{printf("\ninstruccion -> instruccionInterrupcion");}
-	| instruccionLanzamientoExcepcion	{printf("\ninstruccion -> instruccionLanzamientoExcepcion")pñ;}
+	| instruccionLanzamientoExcepcion	{printf("\ninstruccion -> instruccionLanzamientoExcepcion");}
 	| instruccionDeCapturaDeExcepcion	{printf("\ninstruccion -> instruccionDeCapturaDeExcepcion");}
 	| ';'					{printf("\ninstruccion -> ';'");}
+	| finInstruccionError			{printf("\ninstruccion -> finInstruccionError");}
 ;
 
 instruccionAsignacion: objeto operadorAsignacion expresion ';' {printf("\ninstruccionAsignacion -> objeto op_asignacion expresion ';'");}
@@ -513,12 +514,14 @@ expresionCondicional: '[' expresion           {printf("\nexpresionCondicional ->
 	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 ;
 
-reductora: error primario {printf("\nreductora -> error primario");}
-	| error expresion {printf("\nreductora -> error expresion");}
+reductora: error expresion {printf("\nreductora -> error expresion");}
 	| reductora error {printf("\nreductora -> error expresion");}
 ;
 
 finSubprogramaError: reductora FIN SUBPROGRAMA{printf("\nfinSubprogramaError -> reductora FIN SUBPROGRAMA");}
+;
+
+finInstruccionError: reductora ';' {printf("\nfinInstruccionError -> reductora ';'");}
 ;
 
 
@@ -537,7 +540,7 @@ int yywrap() {
 
 int main(int argc, char *argv[]) {
 
-  yydebug = 1;
+  yydebug = 0;
 
   if (argc < 2) {
     printf("Uso: ./simple NombreArchivo\n");
