@@ -52,11 +52,7 @@ int yyerror(char *s);
 %right '^'
 %nonassoc INC
 %nonassoc DEC
-<<<<<<< HEAD
-%left PRIM
-=======
 %nonassoc MENOS_UNI
->>>>>>> 2400a17c1122101bfdbc42d14040c9815b275401
 
 
 
@@ -437,6 +433,7 @@ elementoEnumeracionMultiple: elementoEnumeracion ',' elementoEnumeracion {printf
 ;
 
 declaracionSubprograma: SUBPROGRAMA cabeceraSubprograma cuerpoSubprograma SUBPROGRAMA {printf("\ndeclaracionSubprograma -> SUBPROGRAMA cabeceraSubprograma cuerpoSubprograma SUBPROGRAMA");}
+	| finSubprogramaError {printf("\ndeclaracionSubprograma -> finSubprogramaError");}
 ;
 
 cabeceraSubprograma: IDENTIFICADOR 			{printf("\ncabeceraSubprograma -> IDENTIFICADOR");}
@@ -515,6 +512,16 @@ expresionCondicional: '[' expresion           {printf("\nexpresionCondicional ->
 	| SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
 	| SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 ;
+
+reductora: error primario {printf("\nreductora -> error primario");}
+	| error expresion {printf("\nreductora -> error expresion");}
+	| reductora error {printf("\nreductora -> error expresion");}
+;
+
+finSubprogramaError: reductora FIN SUBPROGRAMA{printf("\nfinSubprogramaError -> reductora FIN SUBPROGRAMA");}
+;
+
+
 
 %%
 
