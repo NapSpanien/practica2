@@ -25,7 +25,7 @@ subprograma ordenarQuicksort
     pivote := datos[(izdo+dcho)/2];
 
     mientras izdo<=dcho
-      mientras datos[izdo]<pivote /\ izdo<limDcho
+      mientras datos[izdo]<pivote /\ izdo<limDcho 
         izdo := izdo+1;
       fin bucle
 
