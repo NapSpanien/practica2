@@ -26,7 +26,7 @@ int yyerror(char *s);
 %token CTC_CADENA IDENTIFICADOR CTC_ENTERA CTC_REAL DOS_PUNTOS CUATRO_PUNTOS
 %token ASIGNACION FLECHA INC DEC DESPI DESPD LEQ GEQ NEQ AND OR ASIG_SUMA ASIG_RESTA
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
-
+%prec 
 %right SI ENTONCES SINO
 %right PARA EN 
 
@@ -42,8 +42,8 @@ int yyerror(char *s);
 %right FLECHA 
 %right CUATRO_PUNTOS
 
-%left AND
-%left OR
+%right AND
+%right OR
 %nonassoc '~'
 %nonassoc '<' '>' GEQ LEQ NEW '='
 %left DESPI
@@ -183,18 +183,6 @@ clausulas: clausulasExcepcion {printf("\nclausulas -> clausulasExcepcion");}
 identificadorMultiple: IDENTIFICADOR ',' IDENTIFICADOR {printf("\nidentificadorMultiple -> IDENTIFICADOR ',' IDENTIFICADOR");}
 	| identificadorMultiple ',' IDENTIFICADOR {printf("\nidentificadorMultiple -> identificadorMultiple ',' IDENTIFICADOR");}
 ;
-
-
-
-cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
-	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}	
-; 
-
-nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
-	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
-;
-nombreMultiple: nombre ',' nombre {printf("\nnombreMultiple -> nombre , nombre");}
-	| nombreMultiple ',' nombre {printf("\nnombreMultiple -> nombreMultiple , nombre");}
 
 expresionMult : expresionMult ',' expresion {printf("\nexpresionMult -> expresionMult , expresion");}
 	| expresion ',' expresion           {printf("\nexpresionMult -> expresion , expresion");}
@@ -429,29 +417,39 @@ codigoLibreria: libreriaMultiple exportaciones declaracion {printf("\ncodigoLibr
 	| declaracionMultiple {printf("\ncodigoLibreria -> declaracionMultiple");}
 ;
 
-expresion: expresion '+' expresion {printf("\nexpresion -> expresion '+' expresion");}
-	| expresion '-' expresion {printf("\nexpresion -> expresion - expresion");}
-	| expresion '/' expresion {printf("\nexpresion -> expresion / expresion");}
-	| expresion '\\' expresion {printf("\nexpresion -> expresion \\ expresion");}
-	| expresion '*' expresion {printf("\nexpresion -> expresion * expresion");}
-	| expresion DESPI expresion {printf("\nexpresion -> expresion <- expresion");}
-	| expresion DESPD expresion {printf("\nexpresion -> expresion -> expresion");}
-	| expresion '.' expresion {printf("\nexpresion -> expresion . expresion");}
-	| '[' expresion ']'        {printf("\nexpresion -> [ expresion ] ");} 
-	| '{' expresion '}'        {printf("\nexpresion -> { expresion } ");} 
+expresion: expresion '+' expresion 	{printf("\nexpresion -> expresion '+' expresion");}
+	| expresion '-' expresion 	{printf("\nexpresion -> expresion - expresion");}
+	| expresion '/' expresion 	{printf("\nexpresion -> expresion / expresion");}
+	| expresion '\\' expresion 	{printf("\nexpresion -> expresion \\ expresion");}
+	| expresion '*' expresion 	{printf("\nexpresion -> expresion * expresion");}
+	| expresion DESPI expresion 	{printf("\nexpresion -> expresion <- expresion");}
+	| expresion DESPD expresion 	{printf("\nexpresion -> expresion -> expresion");}
+	| expresion '.' expresion 	{printf("\nexpresion -> expresion . expresion");}
+	| '[' expresion ']'        	{printf("\nexpresion -> [ expresion ] ");} 
+	| '{' expresion '}'        	{printf("\nexpresion -> { expresion } ");} 
 	| expresion CUATRO_PUNTOS expresion {printf("\nexpresion -> expresion :: expresion");}
-	| expresion '<' expresion {printf("\nexpresion -> expresion < expresion");}
-	| expresion '>' expresion {printf("\nexpresion -> expresion > expresion");}
-	| expresion LEQ expresion {printf("\nexpresion -> expresion <= expresion");}
-	| expresion GEQ expresion {printf("\nexpresion -> expresion >= expresion");}
-	| expresion '=' expresion {printf("\nexpresion -> expresion = expresion");}
-	| expresion NEQ expresion {printf("\nexpresion -> expresion NEQ expresion");}
-	| expresion '~' expresion {printf("\nexpresion -> expresion ~ expresion");}
-	| expresion AND expresion {printf("\nexpresion -> expresion AND expresion");}
-	| expresion OR expresion {printf("\nexpresion -> expresion OR expresion");}
-	| expresionPotencia 	{printf("\nexpresion -> expresionPotencia");}
-	//| nombre {printf("\nexpresion -> literal");}
+	| expresion '<' expresion 	{printf("\nexpresion -> expresion < expresion");}
+	| expresion '>' expresion 	{printf("\nexpresion -> expresion > expresion");}
+	| expresion LEQ expresion 	{printf("\nexpresion -> expresion <= expresion");}
+	| expresion GEQ expresion 	{printf("\nexpresion -> expresion >= expresion");}
+	| expresion '=' expresion 	{printf("\nexpresion -> expresion = expresion");}
+	| expresion NEQ expresion 	{printf("\nexpresion -> expresion NEQ expresion");}
+	| expresion '~' expresion 	{printf("\nexpresion -> expresion ~ expresion");}
+	| expresion AND expresion 	{printf("\nexpresion -> expresion AND expresion");}
+	| expresion OR expresion	{printf("\nexpresion -> expresion OR expresion");}
+	| expresionPotencia 		{printf("\nexpresion -> expresionPotencia");}
 ;
+cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
+	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}	
+; 
+
+nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}
+	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
+;
+nombreMultiple: nombre ',' nombre {printf("\nnombreMultiple -> nombre , nombre");}
+	| nombreMultiple ',' nombre {printf("\nnombreMultiple -> nombreMultiple , nombre");}
+;
+
 expresionPotencia: expresionPosfija {printf("\nexpresionPotencia -> expresionPosfija");}
 	| expresionPosfija '^' expresionPotencia {printf("\nexpresionPotencia -> expresionPosfija ^ expresionPotencia");}
 ;
@@ -463,10 +461,10 @@ operadorPosfijo: INC {printf("\noperadorPosfijo -> INC");}
 ;
 expresionUnaria: primario {printf("\nexpresionUnaria -> primario");}
 	| '-' primario {printf("\nexpresionUnaria -> '-' primario");}
-;
+; 
 
 primario: literal {printf("\nprimario -> literal");}
-	| objeto  {printf("\nprimario -> objeto");}
+	| objeto {printf("\nprimario -> objeto");}
 	| llamadaSubprograma {printf("\nprimario -> llamada_subprograma");}
 	| objeto llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
 	| enumeraciones {printf("\nprimario -> enumeraciones ");}
