@@ -53,6 +53,7 @@ int yyerror(char *s);
 %right '^'
 %nonassoc INC
 %nonassoc DEC
+%left PRIM
 
 
 
@@ -240,7 +241,7 @@ instruccion: instruccionAsignacion {printf("\ninstruccion -> instruccionAsignaci
 	| instruccionCasos			{printf("\ninstruccion -> instruccionCasos");}
 	| instruccionBucle			{printf("\ninstruccion -> instruccionBucle");}
 	| instruccionInterrupcion		{printf("\ninstruccion -> instruccionInterrupcion");}
-	| instruccionLanzamientoExcepcion	{printf("\ninstruccion -> instruccionLanzamientoExcepcion");}
+	| instruccionLanzamientoExcepcion	{printf("\ninstruccion -> instruccionLanzamientoExcepcion")pñ;}
 	| instruccionDeCapturaDeExcepcion	{printf("\ninstruccion -> instruccionDeCapturaDeExcepcion");}
 	| ';'					{printf("\ninstruccion -> ';'");}
 ;
@@ -439,6 +440,7 @@ expresion: expresion '+' expresion 	{printf("\nexpresion -> expresion '+' expres
 	| expresion OR expresion	{printf("\nexpresion -> expresion OR expresion");}
 	| expresionPotencia 		{printf("\nexpresion -> expresionPotencia");}
 ;
+
 cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_CADENA");}
 	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}	
 ; 
@@ -464,11 +466,11 @@ expresionUnaria: primario {printf("\nexpresionUnaria -> primario");}
 ; 
 
 primario: literal {printf("\nprimario -> literal");}
-	| objeto {printf("\nprimario -> objeto");}
 	| llamadaSubprograma {printf("\nprimario -> llamada_subprograma");}
 	| objeto llamadaSubprograma {printf("\nprimario -> OBJETO llamada_subprograma");}
 	| enumeraciones {printf("\nprimario -> enumeraciones ");}
 	| '(' expresion ')' {printf("\nprimario -> ( expresion ) ");}
+	| objeto %prec PRIM{printf("\nprimario -> objeto");}
 ;
 literal: VERDADERO     {printf("\nliteral -> VERDADERO");}
 	| FALSO        {printf("\nliteral -> FASLO");}
