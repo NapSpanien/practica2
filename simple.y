@@ -26,8 +26,7 @@ int yyerror(char *s);
 %token CTC_CADENA IDENTIFICADOR CTC_ENTERA CTC_REAL DOS_PUNTOS CUATRO_PUNTOS
 %token ASIGNACION FLECHA INC DEC DESPI DESPD LEQ GEQ NEQ AND OR ASIG_SUMA ASIG_RESTA
 %token ASIG_MULT ASIG_DIV ASIG_RESTO ASIG_POT ASIG_DESPI ASIG_DESPD
-%right SI ENTONCES SINO
-%right PARA EN 
+
 %right FIN 
 %left ':'
 
@@ -53,6 +52,8 @@ int yyerror(char *s);
 %nonassoc INC
 %nonassoc DEC
 %nonassoc MENOS_UNI
+%right SI ENTONCES SINO
+%right PARA EN 
 %right '.'
 
 %%
@@ -161,12 +162,12 @@ objeto: nombre  {printf("\nobjeto -> nombre");}
 
 
 declaracionObjeto: IDENTIFICADOR ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> IDENTIFICADOR : CONSTANTE especificacionTipo ASIGNACION expresion ;\n");}
-	| identificadorMultiple ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : CONSTANTE especificacionTipo ASIGNACION expresion ;\n");}
+	| identificadorMultiple ':' CONSTANTE especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : CONSTANTE especificacionTipo ASIGNACION expresion ;");}
 
-	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion ';'{printf("\ndeclaracionObjeto -> IDENTIFICADOR : especificacionTipo ASIGNACION expresion ;\n");}
-	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : especificacionTipo ASIGNACION expresion ;\n");}
-	| IDENTIFICADOR ':' especificacionTipo ';'{printf("\ndeclaracionObjeto -> IDENTIFICADOR : especificacionTipo ;\n");}
-	| identificadorMultiple ':' especificacionTipo ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : especificacionTipo ;\n");}
+	| IDENTIFICADOR ':' especificacionTipo ASIGNACION expresion ';'{printf("\ndeclaracionObjeto -> IDENTIFICADOR : especificacionTipo ASIGNACION expresion ;");}
+	| identificadorMultiple ':' especificacionTipo ASIGNACION expresion ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : especificacionTipo ASIGNACION expresion ;");}
+	| IDENTIFICADOR ':' especificacionTipo ';'{printf("\ndeclaracionObjeto -> IDENTIFICADOR : especificacionTipo ;");}
+	| identificadorMultiple ':' especificacionTipo ';' {printf("\ndeclaracionObjeto -> identificadorMultiple : especificacionTipo ;");}
 ;
 
 
@@ -214,7 +215,7 @@ instruccionBucle: IDENTIFICADOR ':' clausulaIteracion instruccion FIN BUCLE {pri
 ;
 
 clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
-	| PARA IDENTIFICADOR EN ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
+	| PARA IDENTIFICADOR ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
 
 	| REPETIR IDENTIFICADOR EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO");}
 	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
@@ -365,7 +366,7 @@ especificacionTipo: nombre 	 {printf("\nespecificacionTipo -> nombre");}
 ;
 
 declaracionTipo: TIPO IDENTIFICADOR ES tipoNoEstructurado ';' {printf("\ndeclaracionTipo -> TIPO IDENTIFICADOR ES tipoNoEstructurado ';'");}
-	| TIPO IDENTIFICADOR ES tipoEstructurado ';' {printf("\ndeclaracionTipo -> TIPO IDENTIFICADOR ES tipoEstructurado ';'");}
+	| TIPO IDENTIFICADOR ES tipoEstructurado {printf("\ndeclaracionTipo -> TIPO IDENTIFICADOR ES tipoEstructurado");}
 ;
 
 tipoNoEstructurado: tipoEscalar {printf("\ntipoNoEstructurado -> tipoEscalar");}
@@ -490,7 +491,7 @@ codigoLibreria: libreriaMultiple exportaciones declaracion {printf("\ncodigoLibr
 	| declaracionMultiple {printf("\ncodigoLibreria -> declaracionMultiple");}
 ;
 
-enumeraciones:  expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
+enumeraciones:   expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
 	| expresionCondicional  clausulaIteracionMultiple ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
 	| '[' expresion ']'  {printf("\nenumeraciones -> [ expresion ]");}
 	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
@@ -513,9 +514,9 @@ campoValorMult : campoValor ',' campoValor {printf("\ncampoValorMult -> campo_va
 ;
 campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
 ;
-expresionCondicional: '[' expresion           {printf("\nexpresionCondicional -> expresion");}
+expresionCondicional:  '[' SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
 	| '[' SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
-	| '[' SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
+	|   '[' expresion           {printf("\nexpresionCondicional -> expresion");}
 ;
 
 reductora: error expresion {printf("\nreductora -> error expresion");}
@@ -544,7 +545,7 @@ int yywrap() {
 
 int main(int argc, char *argv[]) {
 
-  yydebug = 0;
+  yydebug = 1;
 
   if (argc < 2) {
     printf("Uso: ./simple NombreArchivo\n");
