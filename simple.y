@@ -217,7 +217,7 @@ instruccionBucle: IDENTIFICADOR ':' clausulaIteracion instruccion FIN BUCLE {pri
 clausulaIteracion: PARA IDENTIFICADOR EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN expresion");}
 	| PARA IDENTIFICADOR ':' especificacionTipo EN expresion {printf("\nclausulaIteracion -> PARA IDENTIFICADOR EN ':' especifiacionTipo EN expresion");}
 
-	| REPETIR IDENTIFICADOR EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN RANGO");}
+	| REPETIR IDENTIFICADOR EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN rango");}
 	| REPETIR IDENTIFICADOR ':' especificacionTipo EN rango {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR ':' especificacionTipo EN rango");}
 
 	| REPETIR IDENTIFICADOR EN rango DESCENDENTE {printf("\nclausulaIteracion -> REPETIR IDENTIFICADOR EN rango DESCENDENTE");}
