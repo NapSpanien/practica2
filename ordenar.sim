@@ -9,7 +9,6 @@ primer subprograma: implementación del quicksort
 #}
 subprograma ordenarQuicksort
 
-  perico se folló a la madre del manuel67 :=
   n : constante entero := 20;
   datos : tabla (1..n) de entero;
   limIzdo : entero := 0;
@@ -26,7 +25,7 @@ subprograma ordenarQuicksort
     pivote := datos[(izdo+dcho)/2];
 
     mientras izdo<=dcho
-      mientras datos[izdo]<pivote /\ izdo<limDcho 
+      mientras datos[izdo]<pivote /\ juan.leer 
         izdo := izdo+1;
       fin bucle
 

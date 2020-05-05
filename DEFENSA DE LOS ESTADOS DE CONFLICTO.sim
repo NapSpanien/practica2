@@ -1,0 +1,37 @@
+DEFENSA DE LOS ESTADOS DE CONFLICTO
+
+
+State 51
+
+   44 nombre: nombre . CUATRO_PUNTOS IDENTIFICADOR
+   67 objeto: nombre .
+  193 llamadaSubprograma: nombre . '(' ')'
+  194                   | nombre . '(' definicionParametro ')'
+  195                   | nombre . '(' definicionParametroMultiple ')'
+
+    CUATRO_PUNTOS  shift, and go to state 151
+    '('            shift, and go to state 152
+
+    CUATRO_PUNTOS  [reduce using rule 67 (objeto)]
+    $default       reduce using rule 67 (objeto)
+
+DEFENSA => el estado 51 hay un conflicto donde si se encuentra un nombre, este puede ser convertido a objeto, sin embargo si el token de preanalisis son CUATRO_PUNTOS ( :: ) Bison hara salto/reduccion, cogiendo CUATRO_PUNTOS  y buscando a continuacion un IDENTIFICADOR, una vez que tenga esto, convertira nombre :: identificador en nombre, y si fuera necesario podria convertir este nombre en objeto
+
+
+State 57
+
+   56 primario: objeto .
+   68 objeto: objeto . '.' IDENTIFICADOR
+   69       | objeto . '[' expresion ']'
+   70       | objeto . '[' expresionMult ']'
+   71       | objeto . '{' CTC_CADENA '}'
+   72       | objeto . '{' cadenaMult '}'
+
+    '{'  shift, and go to state 157
+    '['  shift, and go to state 158
+    '.'  shift, and go to state 159
+
+    '.'       [reduce using rule 56 (primario)]
+    $default  reduce using rule 56 (primario)
+
+DEFENSA => Este estado cuadno bison tiene un objeto en caso de encontrar '.'  el analizador realiza un salto con la intencion de encontrar un identificador, ya que es lo unico que tiene sentido, en caso de encontrarlo todo se vuelve un objeto, lo que a su vez se convierte en un primario, asi que el conflicto no genera problema, si fuese al reves y transformase el objeto . en primario, nos quedaria primario '.' IDENTIFICADOR y daria un error de sintaxis

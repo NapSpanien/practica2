@@ -44,7 +44,7 @@ int yyerror(char *s);
 %left AND
 %left OR
 %nonassoc '~'
-%nonassoc '<' '>' GEQ LEQ NEW '='
+%nonassoc '<' '>' GEQ LEQ NEQ '='
 %left DESPI
 %left DESPD
 %left '+' '-'
@@ -53,8 +53,7 @@ int yyerror(char *s);
 %nonassoc INC
 %nonassoc DEC
 %nonassoc MENOS_UNI
-
-
+%right '.'
 
 %%
 programa: definicionPrograma {printf("\nEXITO programa -> definicionPrograma");}
@@ -116,7 +115,7 @@ cadenaMult: CTC_CADENA ',' CTC_CADENA {printf("\ncadenaMult -> CTC_CADENA , CTC_
 	| cadenaMult ',' CTC_CADENA   {printf("\ncadenaMult -> cadenaMult , CTC_CADENA");}	
 ; 
 
-nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");} 
+nombre: IDENTIFICADOR {printf("\nnombre -> IDENTIFICADOR");}  
 	| nombre CUATRO_PUNTOS IDENTIFICADOR {printf("\nnombre -> nombre :: IDENTIFICADOR");}
 ;
 nombreMultiple: nombre ',' nombre {printf("\nnombreMultiple -> nombre , nombre");}
