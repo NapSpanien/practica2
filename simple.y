@@ -545,7 +545,7 @@ int yywrap() {
 
 int main(int argc, char *argv[]) {
 
-  yydebug = 1;
+  yydebug = 0;
 
   if (argc < 2) {
     printf("Uso: ./simple NombreArchivo\n");
