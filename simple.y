@@ -491,8 +491,8 @@ codigoLibreria: libreriaMultiple exportaciones declaracion {printf("\ncodigoLibr
 	| declaracionMultiple {printf("\ncodigoLibreria -> declaracionMultiple");}
 ;
 
-enumeraciones:   expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
-	| expresionCondicional  clausulaIteracionMultiple ']' {printf("\nenumeraciones -> [ expresionCondicional ]");}
+enumeraciones:   expresionCondicional  clausulaIteracion ']' {printf("\nenumeraciones ->  expresionCondicional ]");}
+	| expresionCondicional  clausulaIteracionMultiple ']' {printf("\nenumeraciones ->  expresionCondicional ]");}
 	| '[' expresion ']'  {printf("\nenumeraciones -> [ expresion ]");}
 	| '[' expresionMult ']'  {printf("\nenumeraciones -> [ expresionMult ]");}
 	| '{' claveValor '}'     {printf("\nenumeraciones -> [ claveValor ]");}
@@ -514,9 +514,9 @@ campoValorMult : campoValor ',' campoValor {printf("\ncampoValorMult -> campo_va
 ;
 campoValor: IDENTIFICADOR FLECHA expresion {printf("\ncampo_valor -> CTC_CADENA => expresion");}
 ;
-expresionCondicional:  '[' SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> si expresion entonces expresion SINO expresion");}
-	| '[' SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> si expresion entonces expresion");}
-	|   '[' expresion           {printf("\nexpresionCondicional -> expresion");}
+expresionCondicional:  '[' SI expresion ENTONCES expresion SINO expresion {printf("\nexpresionCondicional -> [ si expresion entonces expresion SINO expresion");}
+	| '[' SI expresion ENTONCES expresion {printf("\nexpresionCondicional -> [ si expresion entonces expresion");}
+	| '[' expresion           {printf("\nexpresionCondicional -> [ expresion");}
 ;
 
 reductora: error expresion {printf("\nreductora -> error expresion");}
